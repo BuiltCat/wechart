@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="PUBLIC/css/frozen.css">
+    <title>登陆</title>
+    <style>
+        .tohide{
+            display: none;
+        }
+        .center{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header class="ui-header ui-header-positive ui-border-b">
+        <h1>登陆</h1>
+    </header><div class="ui-placehold-wrap">
+    </div>
+    <div class="center">
+        <img src="PUBLIC/img/logo.png" alt="登陆图标">
+    </div>
+    <div class="ui-form ui-border-t">
+            <div class="ui-form-item ui-form-item-pure ui-border-b">
+                <input id="id" type="text" placeholder="请输入学号">
+                <a class="ui-icon-close"></a>
+            </div>
+            <div class="ui-form-item ui-form-item-pure ui-border-b">
+                <input  id="pw" type="password" placeholder="密码">
+                <a  class="ui-icon-close"></a>
+            </div>
+            <div class="ui-form-item ui-form-item-r ui-border-b">
+                <button id="sub" class="ui-border-l">确认登陆</button>
+            </div>
+    </div>
+    <div id="info" class="ui-tips ui-tips-info tohide">
+        <i></i>
+        <span>请输入完整信息</span>
+    </div>
+    <div id="warn" class="ui-tips ui-tips-warn tohide">
+        <i></i>
+        <span>密码或用户名错误</span>
+    </div>
+    <div id="success" class="ui-tips ui-tips-success tohide">
+        <i></i>
+        <span>登陆成功</span>
+    </div>
+    <div class="center">
+        <br>
+        <a href="#">忘记密码?</a>
+    </div>
+</body>
+<script src="//cdnjs.cloudflare.com/ajax/libs/zui/1.7.0/lib/jquery/jquery.js"></script>
+<script src="PUBLIC/lib/zepto.min.js"></script>
+<script src="PUBLIC/js/frozen.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#sub').click(function () {
+            id = $('#id').val();
+            pw = $('#pw').val();
+            if (id && pw) {
+                $.ajax({
+                    url: "{:url('index/index/login')}",
+                    type: "get",
+                    dataType: 'json',
+                    data: {
+                        userid: id,
+                        userpw: pw
+                    },
+                    success: function (msg) {
+                        if(msg){
+                            $("#success").removeClass("tohide");
+                            $("#warn").addClass("tohide");
+                            $("#info").addClass("tohide");
+                            window.location.href= "{:url('uppage')}";
+                        }else{
+                            $("#success").addClass("tohide");
+                            $("#warn").removeClass("tohide");
+                            $("#info").addClass("tohide");
+                        }
+                    }
+                })
+            }else{
+                $("#success").addClass("tohide");
+                $("#warn").addClass("tohide");
+                $("#info").removeClass("tohide");
+            }
+        })
+    });
+</script>
+
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>文件上传</title>
+    <link rel="stylesheet" href="PUBLIC/css/frozen.css">
+    <style type="text/css">
+        .ui-header {
+            position: inherit;
+        }
+        input[type=file]{
+            opacity: 0;
+            z-index: 999;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="ui-header ui-header-positive ui-border-b">
+        <h1>文件上传</h1>
+    </header>
+    <div class="ui-form ui-border-t">
+        {volist name="file" id="data"}
+        <div class="ui-form-item ui-form-item-radio ui-border-b">
+            <label class="ui-radio" for="radio">
+                <input type="radio" value="{$data.fileid}" name="radio">
+            </label>
+            <p>{$data.filename}</p>
+        </div>
+        {/volist}
+    </div>
+        <button class="ui-btn-lg">
+            <input id="upfile" class="ui-btn-lg" type="file" name="image" />
+            选择文件
+        </button>
+    <br>
+    <div class="ui-footer ui-footer-stable ui-btn-group ui-border-t" style="z-index:1000;">
+        <button id="update" class="ui-btn-lg ui-btn-primary">
+            上传
+        </button>
+        <button id="delete" class="ui-btn-lg ">
+            删除
+        </button>
+        </input>
+    </div>
+    <div id="infodiv" class="ui-loading-block">
+        <div class="ui-loading-cnt">
+            <i class="ui-loading-bright"></i>
+            <p>正在上传</p>
+        </div>
+    </div>
+</body>
+<script src="//cdnjs.cloudflare.com/ajax/libs/zui/1.7.0/lib/jquery/jquery.js"></script>
+<script src="PUBLIC/lib/zepto.min.js"></script>
+<script src="PUBLIC/js/frozen.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#update').click(function () {
+            var formdata = new FormData();
+            formdata.append('file', $('#upfile')[0].files[0]);
+            $.ajax({
+                url: "{:url('index/index/upload')}",
+                type: "post",
+                dataType: 'json',
+                data: formdata,
+                contentType: false,
+                processData: false,
+                beforeSend: function () {
+                    $('#infodiv').addClass('show');
+                },
+                success: function (msg) {
+                    $('#infodiv').removeClass('show');
+                },
+                error: function (msg, err) {
+
+                }
+            })
+        })
+    });
+</script>
+
+</html>
