@@ -50,26 +50,31 @@ class Index extends \think\Controller
             $file = request()->file('file');
             if($file){
             // 移动到框架应用根目录/public/uploads/ 目录下
-                $info = $file->validate(['size'=>536870912,'ext'=>'jpg,png,gif,mp4'])->move(ROOT_PATH . 'public' . DS . 'uploads/'.$user['userclass'].'/'.$user['userid'],'');
-            if($info){
-                $filepath = 'public' . DS . 'uploads/'.$user['userclass'].'/'.$user['userid'];
-                $data = [
-                    'fileid' => date("YmdHis"),
-                    'userid' => $user['userid'],
-                    'filepath' => $filepath,
-                    'filename' => $info->getSaveName(),
-                    'update' => date("Y-m-d H:i:s"),
-                    ];
-                $msg=Db::table('file')->insert($data);
-                return $msg;
-            }else{
-                // 上传失败获取错误信息
-                return $file->getError();
+                $info = $file->validate(['size'=>536870912,'ext'=>'jpg,png,mp4'])->move(ROOT_PATH . 'public' . DS . 'uploads/'.$user['userclass'].'/'.$user['userid'],'');
+                if($info){
+                    $filepath = 'public' . DS . 'uploads/'.$user['userclass'].'/'.$user['userid'];
+                    $data = [
+                        'fileid' => date("YmdHis"),
+                        'userid' => $user['userid'],
+                        'filepath' => $filepath,
+                        'filename' => iconv("GB2312","UTF-8//IGNORE",$info->getSaveName()),
+                        'update' => date("Y-m-d H:i:s"),
+                        ];
+                    $msg=Db::table('file')->insert($data);
+                    return 1;
+                }else{
+                    // 上传失败获取错误信息
+                    return $file->getError();
             }
-        }else{
-            return 0;
+            }else{
+                return "请选择上传文件";
+            }
         }
-    }
     
+    }
+    public function delete(){
+        $delete = request()->delete();
+        $info = Db::table('file')->where($delete)->delete();
+        return $info;
     }
 }
