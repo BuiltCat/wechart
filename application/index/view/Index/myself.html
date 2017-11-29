@@ -8,7 +8,7 @@
     <title>个人中心</title>
     <link rel="stylesheet" href="PUBLIC/css/frozen.css">
     <style>
-        .center{
+        .center {
             text-align: center;
         }
     </style>
@@ -18,27 +18,34 @@
     <header class="ui-header ui-header-positive ui-border-b">
         <h1>个人中心</h1>
     </header>
-    <div class="ui-placehold-wrap"></div><div class="center">
-        <img src="PUBLIC/img/logo.png" alt="登陆图标">
-    </div>
-    <ul class="ui-list ui-list-text ui-list-link ui-border-tb">
-        <li class="ui-border-t">
-            <h4>名字</h4>
-            <div class="ui-txt-info">{$user.usernm}</div>
-        </li>
-        <li class="ui-border-t">
-            <h4 class="ui-nowrap">班级</h4>
-            <div class="ui-txt-info">{$user.userclass}</div>
-        </li>
-        <li class="ui-border-t">
-            <h4 class="ui-nowrap">学号</h4>
-            <div class="ui-txt-info">{$user.userid}</div>
-        </li>
-        <li class="ui-border-t">
-            <h4 class="ui-nowrap">手机号码</h4>
-            <div class="ui-txt-info">{$user.userphone}</div>
-        </li>
-    </ul>
+    <footer class="ui-footer ui-footer-stable ui-btn-group ui-border-t">
+        <a class="ui-btn-lg ui-btn-primary" href="/uppage">
+            上传作业
+        </a>
+    </footer>
+    <section class="ui-container">
+        <div class="center">
+            <img src="PUBLIC/img/logo.png" alt="登陆图标">
+        </div>
+        <ul class="ui-list ui-list-text ui-list-link ui-border-tb">
+            <li class="ui-border-t">
+                <h4>名字</h4>
+                <div class="ui-txt-info">{$user.usernm}</div>
+            </li>
+            <li class="ui-border-t">
+                <h4 class="ui-nowrap">班级</h4>
+                <div class="ui-txt-info">{$user.userclass}</div>
+            </li>
+            <li class="ui-border-t">
+                <h4 class="ui-nowrap">学号</h4>
+                <div class="ui-txt-info">{$user.userid}</div>
+            </li>
+            <li class="ui-border-t">
+                <h4 class="ui-nowrap">手机号码</h4>
+                <div class="ui-txt-info">{$user.userphone}</div>
+            </li>
+        </ul>
+    </section>
 </body>
 <script src="//cdnjs.cloudflare.com/ajax/libs/zui/1.7.0/lib/jquery/jquery.js"></script>
 <script src="PUBLIC/lib/zepto.min.js"></script>

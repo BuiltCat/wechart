@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<title>管理中心</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="PUBLIC/css/w3.css">
+<link rel="stylesheet" href="PUBLIC/font-awesome/css/font-awesome.min.css">
+</style>
+
+<body class="w3-light-grey">
+
+    <!-- 头 -->
+    <div class="w3-container w3-top w3-black w3-large w3-padding" style="z-index:4">
+        <button class="w3-btn w3-hide-large w3-padding-0 w3-hover-text-grey" onclick="w3_open()">
+            <i class="fa fa-bars"></i>  Menu</button>
+        <span class="w3-right">你好，{$teacher.usernm}老师！</span>
+    </div>
+    <div class="w3-main" style="margin-top:43px;">
+        <hr>
+        <div>
+
+            <div class="w3-container" style="float:left;width:50%;">
+                <h5>我的学生</h5>
+                <form id="selectform" action="/admin" method="GET">
+                    <select id="selectclass" class="w3-select" style="width: auto;padding: 0 2%;margin: 0;" name="option">
+                        {volist name="class" id="data"} {if condition="($data == $choose)"}
+                        <option name="choose" value="{$data}" disabled selected>{$data}班</option>
+                        {else /}
+                        <option name="choose" value="{$data}">{$data}班</option>
+                        {/if} {/volist}
+                    </select>
+                </form>
+                <br>
+                <ul class="w3-ul w3-card-4 w3-white">
+                    {volist name="users" id="data"} {if condition="($data.userclass == $choose)"}
+                    <li class="w3-padding-16">
+                        <span id="{$data.userid}" onclick="deleteStu(this.id)" class="w3-closebtn w3-padding w3-margin-right w3-medium">x</span>
+                        <span id="{$data.userid}" onclick="downloadOne(this.id)" class="w3-closebtn w3-padding w3-margin-right w3-medium">
+                            <i class="fa fa-link">
+                            </i>
+                        </span>
+                        {if condition="($data.sex == '男')"}
+                        <img src="http://cdn.w3schools.wang/img_avatar2.png" class="w3-left w3-circle w3-margin-right" style="width:35px"> {else /}
+                        <img src="http://cdn.w3schools.wang/img_avatar4.png" class="w3-left w3-circle w3-margin-right" style="width:35px"> {/if}
+                        <span class="w3-xlarge">{$data.usernm}</span>
+                        <br>
+                    </li>
+                    {/if} {/volist}
+                </ul>
+                <br>
+                <button class="w3-btn w3-dark-grey" onclick="document.getElementById('addStu').style.display='block'">添加学生</button>
+                <button class="w3-btn w3-dark-grey">批量添加</button>
+                <button class="w3-btn w3-dark-grey" onclick="downloadAll('{$choose}')">全部下载</button>
+            </div>
+            <div class="w3-container" style="float:left;width:50%">
+                <h5>我的班级</h5>
+                <br>
+                <br>
+                <ul class="w3-ul w3-card-4 w3-white">
+                    {volist name="class" id="data"}
+                    <li class="w3-padding-16">
+                        <span id="{$data}" onclick="deleteCla(this.id)" class="w3-closebtn w3-padding w3-margin-right w3-medium">x</span>
+                        <img src="http://cdn.w3schools.wang/img_avatar4.png" class="w3-left w3-circle w3-margin-right" style="width:35px">
+                        <span class="w3-xlarge">{$data}</span>
+                        <br>
+                    </li>
+                    {/volist}
+                </ul>
+                <br>
+                <button class="w3-btn w3-dark-grey" onclick="document.getElementById('addClass').style.display='block'">添加班级</button>
+            </div>
+        </div>
+        <hr>
+        <div id="addClass" class="w3-modal">
+            <div class="w3-modal-content">
+                <header class="w3-container w3-teal">
+                    <span onclick="document.getElementById('addClass').style.display='none'" class="w3-closebtn">&times;</span>
+                    <h2>添加班级</h2>
+                </header>
+                <div class="w3-container">
+                    <p style="text-align:center"><input id="class" type="text"></p>
+                    <p style="text-align:center"><button id="classOk" class="w3-dark-grey">确认添加</button></p>
+                </div>
+            </div>
+        </div>
+        <div id="addStu" class="w3-modal">
+            <div class="w3-modal-content">
+                <header class="w3-container w3-teal">
+                    <span onclick="document.getElementById('addStu').style.display='none'" class="w3-closebtn">&times;</span>
+                    <h2>添加学生</h2>
+                </header>
+                <div class="w3-container">
+                    <p style="text-align:center">
+                        <label for="userid">学号</label>
+                        <input id="userid" type="text">
+                    </p>
+                    <p style="text-align:center">
+                        <label for="userclass">班级</label>
+                        <input id="userclass" type="text">
+                    </p>
+                    <p style="text-align:center">
+                        <button id="StuOk" class="w3-dark-grey">确认添加</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- Footer -->
+        <!-- <footer class="w3-container w3-padding-16 w3-light-grey">
+            <h4>FOOTER</h4>
+            <p>Powered by
+                <a href="http://w3schools.wang/" target="_blank">小半@502</a>
+            </p>
+        </footer> -->
+
+        <!-- End page content -->
+    </div>
+</body>
+<script src="PUBLIC/js/jquery-3.2.1.min.js"></script>
+<script>
+    // Script to open and close sidenav
+    function w3_open() {
+        document.getElementsByClassName("w3-sidenav")[0].style.display = "block";
+        document.getElementsByClassName("w3-overlay")[0].style.display = "block";
+    }
+
+    function w3_close() {
+        document.getElementsByClassName("w3-sidenav")[0].style.display = "none";
+        document.getElementsByClassName("w3-overlay")[0].style.display = "none";
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $('#selectclass').change(function () {
+            $('#selectform').submit();
+        })
+    })
+
+    $('#classOk').click(function () {
+        $.ajax({
+            url: "/addClass",
+            type: "GET",
+            dataType: "json",
+            data: {
+                class: $('#class').val()
+            },
+            success:function(msg){
+                if(msg){
+                    location.reload();
+                }
+            }
+        })
+    })
+    $('#StuOk').click(function () {
+            $.ajax({
+                url: "/addStu",
+                type: "GET",
+                dataType: "json",
+                data: {
+                    userid: $('#userid').val(),
+                    userclass: $('#userclass').val()
+                },
+                success: function (msg) {
+                    if (msg) {
+                        location.reload();
+                    }
+                }
+            })
+        })
+
+    function deleteStu(id) {
+        $.ajax({
+            url: "/deleteStu",
+            type: "GET",
+            data: {
+                userid: id
+            },
+            success: function (msg) {
+                if (msg) {
+                    location.reload();
+                } else {
+                    alert('删除失败！请重试。');
+                }
+            }
+        })
+    }
+
+    function deleteCla(id) {
+        $.ajax({
+            url: "/deleteCla",
+            type: "GET",
+            dataType: "json",
+            data: {
+                class: id
+            },
+            success: function (msg) {
+                if (msg) {
+                    location.reload();
+                } else {
+                    alert('删除失败！请重试。');
+                }
+            }
+        })
+    }
+    function downloadOne(id) {
+         $.ajax({
+            url: "/downloadOne",
+            type: "GET",
+            dataType: "json",
+            data: {
+                userid: id
+            },
+            success:function(msg){
+                window.location.href="/downfile?fileurl="+msg;
+            }
+        })
+    }
+    function downloadAll(id) {
+            $.ajax({
+                url: "/downloadAll",
+                type: "GET",
+                dataType: "json",
+                data: {
+                    class: id
+                },
+                success: function (msg) {
+                    window.location.href = "/downfile?fileurl=" + msg;
+                }
+                
+            })
+        }
+</script>
+
+</html>

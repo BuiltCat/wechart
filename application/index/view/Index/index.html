@@ -8,51 +8,61 @@
     <link rel="stylesheet" href="PUBLIC/css/frozen.css">
     <title>登陆</title>
     <style>
-        .tohide{
+        .tohide {
             display: none;
         }
-        .center{
+
+        .center {
             text-align: center;
+        }
+
+        #sub {
+            height: 44px;
+            width: 206px;
+            color: #00a5e0;
         }
     </style>
 </head>
+
 <body>
     <header class="ui-header ui-header-positive ui-border-b">
         <h1>登陆</h1>
-    </header><div class="ui-placehold-wrap">
-    </div>
-    <div class="center">
-        <img src="PUBLIC/img/logo.png" alt="登陆图标">
-    </div>
-    <div class="ui-form ui-border-t">
+    </header>
+    <section class="ui-container ui-center">
+        <div class="center">
+            <img src="PUBLIC/img/logo.png" alt="登陆图标">
+        </div>
+        <div class="ui-form ui-border-t">
             <div class="ui-form-item ui-form-item-pure ui-border-b">
                 <input id="id" type="text" placeholder="请输入学号">
                 <a class="ui-icon-close" onclick="$('#id').val('')"></a>
             </div>
             <div class="ui-form-item ui-form-item-pure ui-border-b">
-                <input  id="pw" type="password" placeholder="密码">
-                <a  class="ui-icon-close" onclick="$('#pw').val('')"></a>
+                <input id="pw" type="password" placeholder="密码">
+                <a class="ui-icon-close" onclick="$('#pw').val('')"></a>
             </div>
-            <div class="ui-form-item ui-form-item-r ui-border-b">
+            <div class="ui-form-item   ui-border-b">
                 <button id="sub" class="ui-border-l">确认登陆</button>
             </div>
-    </div>
-    <div id="info" class="ui-tips ui-tips-info tohide">
-        <i></i>
-        <span>请输入完整信息</span>
-    </div>
-    <div id="warn" class="ui-tips ui-tips-warn tohide">
-        <i></i>
-        <span>密码或用户名错误</span>
-    </div>
-    <div id="success" class="ui-tips ui-tips-success tohide">
-        <i></i>
-        <span>登陆成功</span>
-    </div>
-    <div class="center">
-        <br>
-        <a href="#">忘记密码?</a>
-    </div>
+        </div>
+        <div id="info" class="ui-tips ui-tips-info tohide">
+            <i></i>
+            <span>请输入完整信息</span>
+        </div>
+        <div id="warn" class="ui-tips ui-tips-warn tohide">
+            <i></i>
+            <span>密码或用户名错误</span>
+        </div>
+        <div id="success" class="ui-tips ui-tips-success tohide">
+            <i></i>
+
+            <span>登陆成功</span>
+        </div>
+        <div class="center">
+            <br>
+            <a href="#">忘记密码?</a>
+        </div>
+    </section>
 </body>
 <script src="//cdnjs.cloudflare.com/ajax/libs/zui/1.7.0/lib/jquery/jquery.js"></script>
 <script src="PUBLIC/lib/zepto.min.js"></script>
@@ -64,7 +74,7 @@
             pw = $('#pw').val();
             if (id && pw) {
                 $.ajax({
-                    url: "{:url('index/index/login')}",
+                    url: "/login",
                     type: "get",
                     dataType: 'json',
                     data: {
@@ -72,19 +82,19 @@
                         userpw: pw
                     },
                     success: function (msg) {
-                        if(msg){
+                        if (msg) {
                             $("#success").removeClass("tohide");
                             $("#warn").addClass("tohide");
                             $("#info").addClass("tohide");
-                            window.location.href= "{:url('uppage')}";
-                        }else{
+                            window.location.href = "/myself";
+                        } else {
                             $("#success").addClass("tohide");
                             $("#warn").removeClass("tohide");
                             $("#info").addClass("tohide");
                         }
                     }
                 })
-            }else{
+            } else {
                 $("#success").addClass("tohide");
                 $("#warn").addClass("tohide");
                 $("#info").removeClass("tohide");
