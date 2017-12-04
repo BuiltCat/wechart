@@ -28,7 +28,8 @@
 
 <body>
     <header class="ui-header ui-header-positive ui-border-b">
-        <h1>文件上传</h1>
+        <i class="ui-icon-return" onclick="history.back()"></i>
+            <h1>文件上传</h1>
     </header>
     <div id="“warid" class="ui-tooltips ui-tooltips-warn hide">
         <div class="ui-tooltips-cnt ui-border-b">
@@ -70,6 +71,22 @@
             </div>
         </div>
     </div>
+    <div class="ui-dialog hide">
+        <div class="ui-dialog-cnt">
+            <header class="ui-dialog-hd ui-border-b">
+                <h3>更改文件名</h3>
+                <i id="iconcancel" class="ui-dialog-close" data-role="button"></i>
+            </header>
+            <div class="ui-dialog-bd">
+                <h4>新的文件名</h4>
+                <input id="newname" type="text">
+            </div>
+            <div class="ui-dialog-ft">
+                <button id="cancel" type="button" data-role="button">取消</button>
+                <button id="okup" data-role="button">确认</button>
+            </div>
+        </div>
+    </div>
 </body>
 <script src="PUBLIC/js/jquery-3.2.1.min.js"></script>
 <script src="PUBLIC/lib/zepto.min.js"></script>
@@ -92,6 +109,24 @@
             return str;
         }
         $('#update').click(function () {
+            if($('#upfile')[0].files[0])
+            {
+                $('#newname').val($('#upfile')[0].files[0].name);
+                $('.ui-dialog').removeClass('hide');          
+            }else{
+                $('.ui-dialog').addClass('hide');
+                $('#“warid').removeClass('hide');
+                $('#infodiv').removeClass('show');
+                $('#“warin').text('请选择文件！');
+            }
+        })
+        $('#cancel').click(function () {
+            $('.ui-dialog').addClass('hide');
+        })
+        $('#iconcancel').click(function () {
+            $('.ui-dialog').addClass('hide');
+        })
+        $('#okup').click(function () {
             var xhrOnProgress = function (fun) {
                 xhrOnProgress.onprogress = fun; //绑定监听
                 //使用闭包实现监听绑
@@ -109,9 +144,8 @@
                 }
             }
             var formdata = new FormData();
-            console.log($('#upfile'));
-            formdata.append('file', $('#upfile')[0].files[0]);
-            console.log($('#upfile')[0].files[0].name);
+            formdata.append('file', $('#upfile')[0].files[0],$('#newname').val());
+            console.log(formdata);
             $.ajax({
                 url: "/upload",
                 type: "post",
@@ -131,13 +165,13 @@
                         $('#infodiv').removeClass('show');
                         location.reload();
                     } else {
+                        $('.ui-dialog').addClass('hide');
                         $('#“warid').removeClass('hide');
                         $('#infodiv').removeClass('show');
                         $('#“warin').text(msg);
                     }
                 },
                 error: function (msg, err) {
-
                 }
             })
         })

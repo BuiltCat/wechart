@@ -4,7 +4,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="PUBLIC/css/w3.css">
 <link rel="stylesheet" href="PUBLIC/font-awesome/css/font-awesome.min.css">
+<style>
+    .hide {
+        display: none;
+    }
 </style>
+
 
 <body class="w3-light-grey">
 
@@ -18,8 +23,11 @@
         <hr>
         <div>
 
-            <div class="w3-container" style="float:left;width:50%;">
-                <h5>我的学生</h5>
+            <div id="info" class="w3-container w3-pale-blue w3-leftbar w3-border-blue hide">
+                <p id="infoMess"></p>
+            </div>
+            <div class="w3-container" style="float:left;width:80%;">
+                <h1>我的学生</h1>
                 <form id="selectform" action="/admin" method="GET">
                     <select id="selectclass" class="w3-select" style="width: auto;padding: 0 2%;margin: 0;" name="option">
                         {volist name="class" id="data"} {if condition="($data == $choose)"}
@@ -32,18 +40,38 @@
                 <br>
                 <ul class="w3-ul w3-card-4 w3-white">
                     {volist name="users" id="data"} {if condition="($data.userclass == $choose)"}
-                    <li class="w3-padding-16">
-                        <span id="{$data.userid}" onclick="deleteStu(this.id)" class="w3-closebtn w3-padding w3-margin-right w3-medium">x</span>
-                        <span id="{$data.userid}" onclick="downloadOne(this.id)" class="w3-closebtn w3-padding w3-margin-right w3-medium">
+                    <li  class="w3-padding-16">
+                        <span onclick="deleteStu({$data.userid})" class="w3-closebtn w3-padding w3-margin-right w3-medium">x</span>
+                        <span onclick="downloadOne({$data.userid})" class="w3-closebtn w3-padding w3-margin-right w3-medium">
                             <i class="fa fa-link">
+                            </i>
+                        </span>
+                        <span onclick="myFunction({$data.userid})" class="w3-closebtn w3-padding w3-margin-right w3-medium">
+                            <i class="fa fa-server">
                             </i>
                         </span>
                         {if condition="($data.sex == '男')"}
                         <img src="http://cdn.w3schools.wang/img_avatar2.png" class="w3-left w3-circle w3-margin-right" style="width:35px"> {else /}
                         <img src="http://cdn.w3schools.wang/img_avatar4.png" class="w3-left w3-circle w3-margin-right" style="width:35px"> {/if}
-                        <span class="w3-xlarge">{$data.usernm}</span>
+                        <span class="w3-large">{$data.userid}-{$data.usernm}</span>
                         <br>
                     </li>
+                        <div id="{$data.userid}" class="w3-dropdown-content w3-card">
+                            <table class="w3-table w3-striped w3-bordered w3-border">
+                                <tr>
+                                    <th>文件名</th>
+                                    <th>上传日期</th>
+                                </tr> 
+                                {volist name="fileList" id="onefile"}
+                                    {if condition="($onefile.userid == $data.userid)"}
+                                        <tr>
+                                            <td>{$onefile.filename}</td>
+                                            <td>{$onefile.update}</td>
+                                        </tr>
+                                    {/if}
+                                {/volist}
+                            </table>
+                        </div>
                     {/if} {/volist}
                 </ul>
                 <br>
@@ -51,8 +79,8 @@
                 <button class="w3-btn w3-dark-grey">批量添加</button>
                 <button class="w3-btn w3-dark-grey" onclick="downloadAll('{$choose}')">全部下载</button>
             </div>
-            <div class="w3-container" style="float:left;width:50%">
-                <h5>我的班级</h5>
+            <div class="w3-container" style="float:left;width:20%">
+                <h1>我的班级</h1>
                 <br>
                 <br>
                 <ul class="w3-ul w3-card-4 w3-white">
@@ -60,7 +88,7 @@
                     <li class="w3-padding-16">
                         <span id="{$data}" onclick="deleteCla(this.id)" class="w3-closebtn w3-padding w3-margin-right w3-medium">x</span>
                         <img src="http://cdn.w3schools.wang/img_avatar4.png" class="w3-left w3-circle w3-margin-right" style="width:35px">
-                        <span class="w3-xlarge">{$data}</span>
+                        <span class="w3-large">{$data}</span>
                         <br>
                     </li>
                     {/volist}
@@ -77,8 +105,12 @@
                     <h2>添加班级</h2>
                 </header>
                 <div class="w3-container">
-                    <p style="text-align:center"><input id="class" type="text"></p>
-                    <p style="text-align:center"><button id="classOk" class="w3-dark-grey">确认添加</button></p>
+                    <p style="text-align:center">
+                        <input id="class" type="text">
+                    </p>
+                    <p style="text-align:center">
+                        <button id="classOk" class="w3-dark-grey">确认添加</button>
+                    </p>
                 </div>
             </div>
         </div>
@@ -142,29 +174,34 @@
             data: {
                 class: $('#class').val()
             },
-            success:function(msg){
-                if(msg){
+            success: function (msg) {
+                if (msg == 1) {
                     location.reload();
+                } else {
+                    document.getElementById('addClass').style.display = 'none'
+                    $('#infoMess').text(msg)
+                    $('#info').removeClass('hide')
+                    window.setTimeout("$('#info').addClass('hide')", 2000)
                 }
             }
         })
     })
     $('#StuOk').click(function () {
-            $.ajax({
-                url: "/addStu",
-                type: "GET",
-                dataType: "json",
-                data: {
-                    userid: $('#userid').val(),
-                    userclass: $('#userclass').val()
-                },
-                success: function (msg) {
-                    if (msg) {
-                        location.reload();
-                    }
+        $.ajax({
+            url: "/addStu",
+            type: "GET",
+            dataType: "json",
+            data: {
+                userid: $('#userid').val(),
+                userclass: $('#userclass').val()
+            },
+            success: function (msg) {
+                if (msg) {
+                    location.reload();
                 }
-            })
+            }
         })
+    })
 
     function deleteStu(id) {
         $.ajax({
@@ -200,33 +237,58 @@
             }
         })
     }
+
     function downloadOne(id) {
-         $.ajax({
+        $.ajax({
             url: "/downloadOne",
             type: "GET",
             dataType: "json",
             data: {
                 userid: id
             },
-            success:function(msg){
-                window.location.href="/downfile?fileurl="+msg;
+            success: function (msg) {
+                if(msg){
+                    window.location.href = "/downfile?fileurl=" + msg;
+                }else{
+                    document.getElementById('addClass').style.display = 'none'
+                    $('#infoMess').text("没有文件可供下载");
+                    $('#info').removeClass('hide')
+                    window.setTimeout("$('#info').addClass('hide')", 2000)
+                }
             }
         })
     }
+
     function downloadAll(id) {
-            $.ajax({
-                url: "/downloadAll",
-                type: "GET",
-                dataType: "json",
-                data: {
-                    class: id
-                },
-                success: function (msg) {
+        $.ajax({
+            url: "/downloadAll",
+            type: "GET",
+            dataType: "json",
+            data: {
+                class: id
+            },
+            success: function (msg) {
+                if(msg){
                     window.location.href = "/downfile?fileurl=" + msg;
+                }else{
+                    document.getElementById('addClass').style.display = 'none'
+                    $('#infoMess').text("没有文件可供下载");
+                    $('#info').removeClass('hide')
+                    window.setTimeout("$('#info').addClass('hide')", 2000)
                 }
-                
-            })
-        }
+            }
+
+        })
+    }
+    function myFunction(id) {
+        console.log(id)
+        var x = document.getElementById(id);
+        console.log(x);
+        if (x.className.indexOf("w3-show") == -1)
+            x.className += " w3-show";
+        else
+            x.className = x.className.replace(" w3-show", "");
+    }
 </script>
 
 </html>

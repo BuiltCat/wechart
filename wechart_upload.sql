@@ -11,7 +11,7 @@
  Target Server Version : 50635
  File Encoding         : utf-8
 
- Date: 11/29/2017 11:01:58 AM
+ Date: 12/05/2017 02:52:02 AM
 */
 
 SET NAMES utf8;
@@ -35,7 +35,7 @@ CREATE TABLE `file` (
 -- ----------------------------
 DROP TABLE IF EXISTS `teacher`;
 CREATE TABLE `teacher` (
-  `userid` varchar(9) NOT NULL,
+  `userid` varchar(20) NOT NULL,
   `userpw` varchar(255) DEFAULT NULL,
   `usernm` varchar(10) DEFAULT NULL,
   `userphone` varchar(11) DEFAULT NULL,
@@ -60,9 +60,7 @@ CREATE TABLE `user` (
   `userpw` varchar(20) DEFAULT NULL,
   `usernm` varchar(10) DEFAULT NULL,
   `userclass` varchar(7) DEFAULT NULL,
-  `userphone` varchar(11) DEFAULT NULL,
   `sex` varchar(2) DEFAULT NULL,
-  `need` varchar(1) DEFAULT NULL,
   PRIMARY KEY (`userid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

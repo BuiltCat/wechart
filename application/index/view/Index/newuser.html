@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>个人中心</title>
+    <title>用户注册</title>
     <link rel="stylesheet" href="PUBLIC/css/frozen.css">
     <style>
         .center {
@@ -19,7 +19,7 @@
 
 <body>
     <header class="ui-header ui-header-positive ui-border-b">
-        <h1>个人中心</h1>
+        <h1>用户注册</h1>
     </header>
     <footer class="ui-footer ui-footer-stable ui-btn-group ui-border-t">
         <button id="newuser" class="ui-btn-lg ui-btn-primary">
@@ -29,6 +29,14 @@
     <section class="ui-container">
         <div class="center">
             <img src="PUBLIC/img/logo.png" alt="登陆图标">
+        </div>
+        <div class="ui-form-item ui-border-b">
+            <label>
+                学号
+            </label>
+            <input id="userid" type="text" placeholder="请输入您的学号">
+            <a onclick="$('#userid').val('')" class="ui-icon-close">
+            </a>
         </div>
         <div class="ui-form-item ui-border-b">
             <label>
@@ -49,18 +57,18 @@
         </div>
         <div class="ui-form-item ui-border-b">
             <label>
-                新密码
+                班级
             </label>
-            <input id="userpw" placeholder="请输入您的新密码"></input>
-            <a onclick="$('#userpw').val('')" class="ui-icon-close"></a>
-        </div>
-        <div class="ui-form-item ui-form-item-l ui-border-b">
-            <label class="ui-border-r">
-                中国 +86
-            </label>
-            <input id="userphone" type="text" placeholder="请输入手机号码">
-            <a onclick="$('#userphone').val('')" class="ui-icon-close">
+            <input id="userclass" type="text" placeholder="请输入您的班级">
+            <a onclick="$('#userclass').val('')" class="ui-icon-close">
             </a>
+        </div>
+        <div class="ui-form-item ui-border-b">
+            <label>
+                密码
+            </label>
+            <input id="userpw" placeholder="请输入您的密码"></input>
+            <a onclick="$('#userpw').val('')" class="ui-icon-close"></a>
         </div>
         <div id="warn" class="ui-tips ui-tips-warn tohide">
             <i></i>
@@ -74,54 +82,65 @@
 <script>
     $(document).ready(function () {
         $('#newuser').click(function () {
+            var userid = $('#userid').val();
             var usernm = $('#usernm').val();
-            var userphone = $('#userphone').val();
             var userpw = $('#userpw').val();
+            var userclass = $('#userclass').val();
             var sex = $('#sex').val();
             var warninfo = $('#warninfo');
-            console.log(usernm,userphone,userpw,sex);
-            if(usernm.length === 0){
-                warninfo.text('用户名为空');
-                $('#warn').removeClass('tohide');
-                setTimeout("$('#warn').addClass('tohide')", 1000);
-            } else if(usernm.length > 10){
-                warninfo.text('用户名为不能超过10个字符');
-                $('#warn').removeClass('tohide');
-                setTimeout("$('#warn').addClass('tohide')", 1000);
-            }else{
-                if(userpw.length === 0){
-                    warninfo.text('密码不能为空');
+            console.log(usernm,userpw,sex);
+            if(userid.length === 9){
+                if(usernm.length === 0){
+                    warninfo.text('用户名为空');
                     $('#warn').removeClass('tohide');
                     setTimeout("$('#warn').addClass('tohide')", 1000);
-                }else if(usernm.length > 16){
-                    warninfo.text('密码为不能超过16个字符');
+                } else if(usernm.length > 10){
+                    warninfo.text('用户名为不能超过10个字符');
                     $('#warn').removeClass('tohide');
                     setTimeout("$('#warn').addClass('tohide')", 1000);
                 }else{
-                    if(userphone.length !== 11){
-                        warninfo.text('请检查手机号码格式');
+                    if(userclass.length === 7){
+                        if (userpw.length === 0) {
+                            warninfo.text('密码不能为空');
+                            $('#warn').removeClass('tohide');
+                            setTimeout("$('#warn').addClass('tohide')", 1000);
+                        } else if (usernm.length > 16) {
+                            warninfo.text('密码为不能超过16个字符');
+                            $('#warn').removeClass('tohide');
+                            setTimeout("$('#warn').addClass('tohide')", 1000);
+                        } else {
+                            $.ajax({
+                                url: "/register",
+                                type: "get",
+                                dataType: 'json',
+                                data: {
+                                    userid:userid,
+                                    usernm: usernm,
+                                    userpw: userpw,
+                                    sex: sex,
+                                    userclass: userclass
+                                },
+                                success: function (msg) {
+                                    if (msg === 1) {
+                                        location.href = "/index"
+                                    }else{
+                                        warninfo.text(msg);
+                                        $('#warn').removeClass('tohide');
+                                        setTimeout("$('#warn').addClass('tohide')", 1000);
+                                    }
+                                }
+                            })
+                        }
+                    }else{
+                        warninfo.text('请输入正确的班级');
                         $('#warn').removeClass('tohide');
                         setTimeout("$('#warn').addClass('tohide')", 1000);
-                    }else{
-                        $.ajax({
-                            url: "/register",
-                            type: "get",
-                            dataType: 'json',
-                            data: {
-                                usernm: usernm,
-                                userphone: userphone,
-                                userpw: userpw,
-                                sex: sex,
-                                need:1
-                            },
-                            success:function(msg){
-                                if(msg){
-                                    location.href = "/index"
-                                }
-                            }
-                        })
                     }
                 }
+            } else {
+                warninfo.text('请输入正确的学号');
+                $('#warn').removeClass('tohide');
+                setTimeout("$('#warn').addClass('tohide')", 1000);
             }
         })
     })

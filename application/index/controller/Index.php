@@ -30,25 +30,27 @@ class Index extends \think\Controller
     public function myself()
     {
         $user =Session::get('user');
-        if($user['need'] == 0){
-            $this->assign('user',$user);
-            return $this->fetch('newuser');
-        }else if($user){
+        if($user){
             $this->assign('user',$user);
             return $this->fetch('myself');
         }else{
             return $this->fetch('index');
         }
     }
+    public function newuser(){
+        return $this->fetch('newuser');
+    }
     public function register(){
-        $user =Session::get('user');
-        if($user){
-            $request = Request::instance()->param();
-            $result = Db::table('user')->where('userid',$user['userid'])->update($request);
+        $request = Request::instance()->param();
+        $isExist = Db::table('user')->where('userid',$request['userid'])->find();
+        if($isExist){
+            return "用户已存在，请登录。";
+        }else { 
+            $result = Db::table('user')->insert($request);
             if($result){
                 return 1;
             }else {
-                return 0;
+                return "注册失败！请重试.";
             }
         }
 
@@ -86,6 +88,7 @@ class Index extends \think\Controller
                         'filename' => iconv("GB2312","UTF-8//IGNORE",$info->getSaveName()),
                         'update' => date("Y-m-d H:i:s"),
                         ];
+                    $dele = Db::table('file')->where('filename',$data['filename'])->delete();
                     $msg=Db::table('file')->insert($data);
                     return 1;
                 }else{
@@ -118,10 +121,19 @@ class Index extends \think\Controller
         if($teacher){
             $class = Db::table('teaclass')->where('userid','=',$teacher['userid'])->column('class');
             $users = Db::table('user')->select();
-            if($request){
-                $this->assign('choose',$request);
+            if($class){
+                if($request){
+                    $this->assign('choose',$request);
+                    $fileList = Db::table('file')->field('userid,filename,update')->select();
+                    $this->assign('fileList',$fileList);
+                }else{
+                    $this->assign('choose',$class[0]);
+                    $fileList = Db::table('file')->select();
+                    $this->assign('fileList',$fileList);
+                }    
             }else{
-                $this->assign('choose',$class[0]);
+                $this->assign('choose',null);
+                $this->assign('fileList',$fileList);
             }
             $this->assign('teacher',$teacher);
             $this->assign('class',$class);
@@ -161,7 +173,7 @@ class Index extends \think\Controller
         $this->delDirAndFile($path);
         return $result;
     }
-    function delDirAndFile( $dirName )
+    function delDirAndFile($dirName)
     {
         if ( $handle = opendir( "$dirName" ) ) {
             while ( false !== ( $item = readdir( $handle ) ) ) {
@@ -188,7 +200,7 @@ class Index extends \think\Controller
         $request = Request::instance()->param();
         $isExit=Db::table('teaclass')->where($request)->find();
         if($isExit){
-            return "已存在";
+            return "该班级已被其他老师选择";
         }else{
             if($request){
                 $data['userid'] = $teacher['userid'];
@@ -225,27 +237,37 @@ class Index extends \think\Controller
     {
         $request = Request::instance()->param();
         $info = Db::table('file')->where($request)->find();
-        $zipname = $info['userid'].'.zip';
-        $zippath = str_replace('public/','',$info['filepath']).'/';
-        $zip=new \ZipArchive();
-        if($zip->open($zipname, \ZipArchive::CREATE)){
-            $this->addFileToZip($zippath, $zip); //调用方法，对要打包的根目录进行操作，并将ZipArchive的对象传递给方法
-            $zip->close(); //关闭处理的zip文件
+        if($info){
+            $zipname = $info['userid'].'.zip';
+            $zippath = str_replace('public/','',$info['filepath']).'/';
+            $zip=new \ZipArchive();
+            if($zip->open($zipname, \ZipArchive::CREATE)){
+                $this->addFileToZip($zippath, $zip); //调用方法，对要打包的根目录进行操作，并将ZipArchive的对象传递给方法
+                $zip->close(); //关闭处理的zip文件
+            }
+            return $zipname;
+        }else{
+            return 0;
         }
-        return $zipname;
     }
     public function downloadAll()
     {
         $request = Request::instance()->param();
-        $zipname = $request['class'];
-        $zippath = 'uploads/'.$zipname.'/';
-        $zipname = $zipname.'.zip';
-        $zip=new \ZipArchive();
-        if($zip->open($zipname, \ZipArchive::CREATE)){
-            $this->addFileToZip($zippath, $zip); //调用方法，对要打包的根目录进行操作，并将ZipArchive的对象传递给方法
-            $zip->close(); //关闭处理的zip文件
+        $sql = "select * from user,file where user.userid = file.userid and user.userclass = ".$request['class'];
+        if(Db::query($sql)){
+            $zipname = $request['class'];
+            $zippath = 'uploads/'.$zipname.'/';
+            $zipname = $zipname.'.zip';
+            $zip=new \ZipArchive();
+            if($zip->open($zipname, \ZipArchive::CREATE)){
+                $this->addFileToZip($zippath, $zip); //调用方法，对要打包的根目录进行操作，并将ZipArchive的对象传递给方法
+                $zip->close(); //关闭处理的zip文件
+            }
+            return $zipname;
+        }else{
+            return 0;
         }
-        return $zipname;
+        
     }
     function addFileToZip($path,$zip){
         $handler=opendir($path); //打开当前文件夹由$path指定。
@@ -270,5 +292,23 @@ class Index extends \think\Controller
         header("Content-Disposition: attachment; filename=".$fileurl);
         echo fread($file,filesize($fileurl));
         fclose($file);
+    }
+    function teReg()
+    {
+        return $this->fetch('tereg');
+    }
+    function regist()
+    {
+        $request = Request::instance()->param();
+        $isExist = Db::table('teacher')->where('userid',$request['userid'])->find();
+        if(!$isExist){
+            if($request['zcm'] == 'yqxyqxls123'){
+                unset($request['zcm']);
+                $msg = Db::table('teacher')->insert($request);
+                return $msg;     
+            }
+        }else{
+            return 500;
+        }
     }
 }
