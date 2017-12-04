@@ -126,7 +126,8 @@
         $('#iconcancel').click(function () {
             $('.ui-dialog').addClass('hide');
         })
-        $('#okup').click(function () {
+        $('#okup').click(function (){
+            $('.ui-dialog').addClass('hide');
             var xhrOnProgress = function (fun) {
                 xhrOnProgress.onprogress = fun; //绑定监听
                 //使用闭包实现监听绑
