@@ -31,6 +31,8 @@ class Index extends \think\Controller
     {
         $user =Session::get('user');
         if($user){
+            $myclass = Db::table('stuclass')->where('userid',$user['userid'])->field('userclass')->select();
+            $this->assign('myclass',$myclass);
             $this->assign('user',$user);
             return $this->fetch('myself');
         }else{
@@ -86,8 +88,8 @@ class Index extends \think\Controller
     {
         $user =Session::get('user');
         if($user){
-            $myclass = Db::table('stuclass')->where('userid',$user['userid'])->field('userclass')->select();
-            $this->assign('myclass',$myclass);
+            $class = Request::instance()->param('class');
+            Session::set('class',$class);
             $file = Db::table('file')->where('userid',$user['userid'])->select();
             $this->assign('file',$file);
             return $this->fetch('upload');
@@ -103,18 +105,21 @@ class Index extends \think\Controller
         $user =Session::get('user');
         if($user){
             $file = request()->file('file');
-            var_dump($file);
+            $class = Session::get('class');
             if($file){
-            // 移动到框架应用根目录/public/uploads/ 目录下
-                $info = $file->validate(['size'=>536870912,'ext'=>'jpeg,jpg,png,mp4'])->move(ROOT_PATH . 'public' . DS . 'uploads/'.$user['userclass'].'/'.$user['userid'],'');
+            // 移动到框架应用根目录/public/目录下
+                $filepath ='public' . DS . $class . DS .$user['userid'];
+                $filepath = iconv("utf-8","gb2312//IGNORE",$filepath);
+                $info = $file->validate(['size'=>536870912,'ext'=>'jpeg,jpg,png,mp4'])->move(ROOT_PATH . $filepath ,'');
                 if($info){
-                    $filepath = 'public' . DS . 'uploads/'.$user['userclass'].'/'.$user['userid'];
+                    $filepath = 'public' . DS . $class . DS . $user['userid'];
                     $data = [
                         'fileid' => date("YmdHis"),
                         'userid' => $user['userid'],
                         'filepath' => $filepath,
                         'filename' => iconv("GB2312","UTF-8//IGNORE",$info->getSaveName()),
                         'update' => date("Y-m-d H:i:s"),
+                        'class' => $class
                         ];
                     $dele = Db::table('file')->where('filename',$data['filename'])->delete();
                     $msg=Db::table('file')->insert($data);
@@ -122,7 +127,7 @@ class Index extends \think\Controller
                 }else{
                     // 上传失败获取错误信息
                     return $file->getError();
-            }
+                }
             }else{
                 return "请选择上传文件";
             }
@@ -153,11 +158,11 @@ class Index extends \think\Controller
             if($class){
                 if($request){
                     $this->assign('choose',$request);
-                    $fileList = Db::table('file')->field('userid,filename,update')->select();
+                    $fileList = Db::table('file')->field('userid,filename,update,class')->select();
                     $this->assign('fileList',$fileList);
                 }else{
                     $this->assign('choose',$class[0]);
-                    $fileList = Db::table('file')->select();
+                    $fileList = Db::table('file')->field('userid,filename,update,class')->select();
                     $this->assign('fileList',$fileList);
                 }    
             }else{

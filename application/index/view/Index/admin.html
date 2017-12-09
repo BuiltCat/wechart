@@ -63,7 +63,7 @@
                                     <th>上传日期</th>
                                 </tr> 
                                 {volist name="fileList" id="onefile"}
-                                    {if condition="($onefile.userid == $data.userid)"}
+                                    {if condition="($onefile.userid == $data.userid&&$onefile.class == $choose)"}
                                         <tr>
                                             <td>{$onefile.filename}</td>
                                             <td>{$onefile.update}</td>

@@ -11,6 +11,9 @@
         .center {
             text-align: center;
         }
+        .hide{
+            display: none;
+        }
     </style>
 </head>
 
@@ -19,7 +22,7 @@
         <h1>个人中心</h1>
     </header>
     <footer class="ui-footer ui-footer-stable ui-btn-group ui-border-t">
-        <a class="ui-btn-lg ui-btn-primary" href="/uppage">
+        <a class="ui-btn-lg ui-btn-primary" onclick="$('.ui-dialog').removeClass('hide');">
             上传作业
         </a>
     </footer>
@@ -38,13 +41,47 @@
             </li>
             <li class="ui-border-t" onclick="location.href='/userclass'">
                 <h4 class="ui-nowrap">班级</h4>
-                <div class="ui-txt-info">{$user.userclass}</div>
+                <div class="ui-txt-info"></div>
             </li>
         </ul>
+        <div class="ui-dialog hide">
+            <div class="ui-dialog-cnt">
+                <header class="ui-dialog-hd ui-border-b">
+                    <h3>上传选项</h3>
+                    <i id="iconcancel" class="ui-dialog-close" data-role="button"></i>
+                </header>
+                <h4 style="text-align:center">班级</h4>
+                <div class="ui-form-item ui-border-b">
+                    <div class="ui-select" style="margin: 0">
+                        <select id="class">
+                            {volist name="myclass" id="data"}
+                            <option>{$data.userclass}</option>
+                            {/volist}
+                        </select>
+                    </div>
+                </div>
+                <div class="ui-dialog-ft">
+                    <button id="cancel" type="button" data-role="button">取消</button>
+                    <button id="okup" data-role="button">确认</button>
+                </div>
+            </div>
+        </div>
     </section>
 </body>
 <script src="//cdnjs.cloudflare.com/ajax/libs/zui/1.7.0/lib/jquery/jquery.js"></script>
 <script src="PUBLIC/lib/zepto.min.js"></script>
 <script src="PUBLIC/js/frozen.js"></script>
-
+<script>
+     $(document).ready(function () {
+            $('#iconcancel').click(function () {
+                $('.ui-dialog').addClass('hide');
+            });
+            $('#cancel').click(function () {
+                $('.ui-dialog').addClass('hide');
+            });
+            $('#okup').click(function () {
+                window.location.href = '/uppage?class='+$('#class').val();
+            })
+        })
+</script>
 </html>
