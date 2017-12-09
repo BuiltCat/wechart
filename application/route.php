@@ -35,3 +35,4 @@ Route::any('/admin/index','admin/index');
 Route::any('/Administration','admin/Administration');
 Route::any('tologin','admin/login');
 Route::any('stuupload','admin/upload');
+Route::any('delectMany','admin/delectMany');

@@ -3,6 +3,9 @@ namespace app\index\controller;
 use \think\Request;
 use \think\Db;
 use \think\Session;
+use think\Loader;
+use PHPExcel_IOFactory;
+use PHPExcel;
 
 class Admin extends \think\Controller
 {
@@ -38,42 +41,64 @@ class Admin extends \think\Controller
             $exts = $info->getExtension();
             $file = $info->getSaveName();
             $array = $this->getExcelData($file,$exts);
+            if($array){
+                 $this->success('新增成功', '/Administration');
+            }else{
+                $this->error('上传失败');
+            }
         }else{
             // 上传失败获取错误信息
-            echo $file->getError();
+            $this->error($file->getError());
         }
     }
-     public function getExcelData($filename, $exts){
-        require_once(ROOT_PATH ."PHPExcal".DS."PHPExcel.php");
-        // 不同类型的文件导入不同的类
-        if ($exts == 'xls') {
-            import("Org.Util.PHPExcel.Reader.Excel5");
-            $PHPReader = new \PHPExcel_Reader_Excel5();
-            var_dump(1);
-        } else if ($exts == 'xlsx') {
-            import("Org.Util.PHPExcel.Reader.Excel2007");
-            $PHPReader = new \PHPExcel_Reader_Excel2007();
-            var_dump(1);
+    public function getExcelData($filename,$exts){
+        // $filename = iconv("utf-8","gb2312//IGNORE",$filename);
+        Loader::import('PHPExcel.Classes.PHPExcel');
+        Loader::import('PHPExcel.Classes.PHPExcel.IOFactory.PHPExcel_IOFactory');
+        $PHPExcel = new PHPExcel();
+        if($exts == 'xls'){
+            $PHPReader = PHPExcel_IOFactory::createReader('Excel5');
+        }else{
+            $PHPReader = PHPExcel_IOFactory::createReader('Excel2007');
         }
-        //载入文件
         $PHPExcel = $PHPReader->load($filename);
         //获取表中的第一个工作表，如果要获取第二个，把0改为1，依次类推
         $currentSheet = $PHPExcel->getSheet(0);
-        //获取总列数
-        $allColumn = $currentSheet->getHighestColumn();
         //获取总行数
         $allRow = $currentSheet->getHighestRow();
         //循环获取表中的数据，$currentRow表示当前行，从哪行开始读取数据，索引值从0开始
-        for ($currentRow = 1; $currentRow <= $allRow; $currentRow++) {
+        for ($currentRow = 2; $currentRow <= $allRow; $currentRow++) {
             //从哪列开始，A表示第一列
-            for ($currentColumn = 'A'; $currentColumn <= $allColumn; $currentColumn++) {
+            for ($currentColumn = 'B'; $currentColumn <= 'D'; $currentColumn++) {
                 //数据坐标
                 $address = $currentColumn . $currentRow;
                 //读取到的数据，保存到数组$arr中
-                $data[$currentRow][$currentColumn] = $currentSheet->getCell($address)->getValue();
+                $info = $currentSheet->getCell($address)->getValue();
+                if($info){
+                    if($currentColumn == 'B'){
+                        $data[$currentRow-2]['userid'] = $info;
+                    }
+                    if($currentColumn == 'C'){
+                        $data[$currentRow-2]['usernm'] = $info;
+                    }
+                    if($currentColumn == 'D'){
+                        $data[$currentRow-2]['userpw'] = 123456;
+                    }
+                }
             }
         }
         @unlink ( $filename ); //删除上传的文件
-        return $data;
+        return Db::name('user')->insertAll($data);
+    }
+    public function delectMany(){
+        $url = Request::instance()->url();
+        $baseurl = Request::instance()->baseUrl();
+        $query = str_replace($baseurl.'?','',$url);
+        $query = str_replace('userid=','',$query);
+        $query = explode("&",$query);
+        foreach ($query as $key => $value) {
+            Db::table('user')->where('userid',$value)->delete();
+        }
+        $this->success('删除成功', '/Administration');
     }
 }

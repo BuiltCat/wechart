@@ -90,10 +90,12 @@ class Index extends \think\Controller
         $user =Session::get('user');
         if($user){
             $class = Request::instance()->param('class');
-            Session::set('class',$class);
-            $file = Db::table('file')->where('userid',$user['userid'])->where('class',$class)->select();
-            $this->assign('file',$file);
-            return $this->fetch('upload');
+            if($class){
+                Session::set('class',$class);
+                $file = Db::table('file')->where('userid',$user['userid'])->where('class',$class)->select();
+                $this->assign('file',$file);
+                return $this->myself();
+            }
         }else{
             return $this->fetch('index');
         }
