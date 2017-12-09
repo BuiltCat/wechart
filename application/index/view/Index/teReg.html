@@ -64,10 +64,6 @@
             </label>
             <input id="nm" class="w3-input w3-border" type="text">
             <label class="w3-label w3-text-blue">
-                <b>手机号</b>
-            </label>
-            <input id="ph" class="w3-input w3-border" type="text">
-            <label class="w3-label w3-text-blue">
                 <b>注册码</b>
             </label>
             <input id="zcm" class="w3-input w3-border" type="text">
@@ -86,7 +82,6 @@
             var userid = $('#acc').val()
             var userpw = $('#pw').val()
             var usernm = $('#nm').val()
-            var userphone = $('#ph').val()
             if (userid.length === 0) {
                 $('#infoMess').text('用户名为空!')
                 $('#info').removeClass('hide')
@@ -110,37 +105,30 @@
                         $('#info').removeClass('hide')
                         window.setTimeout("$('#info').addClass('hide')", 2000)
                     } else {
-                        if (userphone.length !== 11) {
-                            $('#infoMess').text('手机号为11位数字!')
-                            $('#info').removeClass('hide')
-                            window.setTimeout("$('#info').addClass('hide')", 2000)
-                        }else{
-                            $.ajax({
-                                url: "/regist",
-                                type: 'get',
-                                dataType: 'json',
-                                data: {
-                                    userid: userid,
-                                    userpw: userpw,
-                                    usernm: usernm,
-                                    userphone: userphone,
-                                    zcm: $('#zcm').val()
-                                },
-                                success: function (msg) {
-                                    if(msg === 0){
-                                        $('#infoMess').text('注册失败，请稍后重试!')
-                                        $('#info').removeClass('hide')
-                                        window.setTimeout("$('#info').addClass('hide')", 2000)
-                                    }else if(msg == 500){
-                                        $('#infoMess').text("用户已存在！")
-                                        $('#info').removeClass('hide')
-                                        window.setTimeout("$('#info').addClass('hide')", 2000)
-                                    }else{
-                                        window.location.href = '/telogin'
-                                    }
+                        $.ajax({
+                            url: "/regist",
+                            type: 'get',
+                            dataType: 'json',
+                            data: {
+                                userid: userid,
+                                userpw: userpw,
+                                usernm: usernm,
+                                zcm: $('#zcm').val()
+                            },
+                            success: function (msg) {
+                                if(msg === 0){
+                                    $('#infoMess').text('注册失败，请稍后重试!')
+                                    $('#info').removeClass('hide')
+                                    window.setTimeout("$('#info').addClass('hide')", 2000)
+                                }else if(msg == 500){
+                                    $('#infoMess').text("用户已存在！")
+                                    $('#info').removeClass('hide')
+                                    window.setTimeout("$('#info').addClass('hide')", 2000)
+                                }else{
+                                    window.location.href = '/telogin'
                                 }
-                            })
-                        }
+                            }
+                        })
                     }
                 }
             }

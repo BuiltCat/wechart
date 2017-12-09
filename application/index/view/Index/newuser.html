@@ -11,6 +11,7 @@
         .center {
             text-align: center;
         }
+
         .tohide {
             display: none;
         }
@@ -57,14 +58,6 @@
         </div>
         <div class="ui-form-item ui-border-b">
             <label>
-                班级
-            </label>
-            <input id="userclass" type="text" placeholder="请输入您的班级">
-            <a onclick="$('#userclass').val('')" class="ui-icon-close">
-            </a>
-        </div>
-        <div class="ui-form-item ui-border-b">
-            <label>
                 密码
             </label>
             <input id="userpw" placeholder="请输入您的密码"></input>
@@ -88,53 +81,47 @@
             var userclass = $('#userclass').val();
             var sex = $('#sex').val();
             var warninfo = $('#warninfo');
-            console.log(usernm,userpw,sex);
-            if(userid.length === 9){
-                if(usernm.length === 0){
+            console.log(usernm, userpw, sex);
+            if (userid.length === 9) {
+                if (usernm.length === 0) {
                     warninfo.text('用户名为空');
                     $('#warn').removeClass('tohide');
                     setTimeout("$('#warn').addClass('tohide')", 1000);
-                } else if(usernm.length > 10){
+                } else if (usernm.length > 10) {
                     warninfo.text('用户名为不能超过10个字符');
                     $('#warn').removeClass('tohide');
                     setTimeout("$('#warn').addClass('tohide')", 1000);
-                }else{
-                    if(userclass.length === 7){
-                        if (userpw.length === 0) {
-                            warninfo.text('密码不能为空');
-                            $('#warn').removeClass('tohide');
-                            setTimeout("$('#warn').addClass('tohide')", 1000);
-                        } else if (usernm.length > 16) {
-                            warninfo.text('密码为不能超过16个字符');
-                            $('#warn').removeClass('tohide');
-                            setTimeout("$('#warn').addClass('tohide')", 1000);
-                        } else {
-                            $.ajax({
-                                url: "/register",
-                                type: "get",
-                                dataType: 'json',
-                                data: {
-                                    userid:userid,
-                                    usernm: usernm,
-                                    userpw: userpw,
-                                    sex: sex,
-                                    userclass: userclass
-                                },
-                                success: function (msg) {
-                                    if (msg === 1) {
-                                        location.href = "/index"
-                                    }else{
-                                        warninfo.text(msg);
-                                        $('#warn').removeClass('tohide');
-                                        setTimeout("$('#warn').addClass('tohide')", 1000);
-                                    }
-                                }
-                            })
-                        }
-                    }else{
-                        warninfo.text('请输入正确的班级');
+                } else {
+                    if (userpw.length === 0) {
+                        warninfo.text('密码不能为空');
                         $('#warn').removeClass('tohide');
                         setTimeout("$('#warn').addClass('tohide')", 1000);
+                    } else if (usernm.length > 16) {
+                        warninfo.text('密码为不能超过16个字符');
+                        $('#warn').removeClass('tohide');
+                        setTimeout("$('#warn').addClass('tohide')", 1000);
+                    } else {
+                        $.ajax({
+                            url: "/register",
+                            type: "get",
+                            dataType: 'json',
+                            data: {
+                                userid: userid,
+                                usernm: usernm,
+                                userpw: userpw,
+                                sex: sex,
+                                userclass: userclass
+                            },
+                            success: function (msg) {
+                                if (msg === 1) {
+                                    location.href = "/index"
+                                } else {
+                                    warninfo.text(msg);
+                                    $('#warn').removeClass('tohide');
+                                    setTimeout("$('#warn').addClass('tohide')", 1000);
+                                }
+                            }
+                        })
                     }
                 }
             } else {
@@ -145,4 +132,5 @@
         })
     })
 </script>
+
 </html>

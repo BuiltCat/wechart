@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>我的班级</title>
+    <link rel="stylesheet" href="PUBLIC/css/frozen.css">
+    <style>
+        .center {
+            text-align: center;
+        }
+        .hide{
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="info" class="ui-poptips ui-poptips-info hide">
+        <div class="ui-poptips-cnt">
+            <i></i>添加失败,请稍后再试.</div>
+    </div>
+    <header class="ui-header ui-header-positive ui-border-b">
+        <i class="ui-icon-return" onclick="history.back()"></i>
+        <h1>我的班级</h1>
+    </header>
+    {if condition="(sizeof($class))"}
+    <footer class="ui-footer ui-footer-stable ui-btn-group ui-border-t">
+        <a class="ui-btn-lg ui-btn-primary" id="stuClass">
+            添加班级
+        </a>
+    </footer>
+    {/if}
+    <section class="ui-container">
+        <div class="center">
+            <img src="PUBLIC/img/logo.png" alt="登陆图标">
+        </div> 
+        {volist name="myclass" id="data"}
+        <ul class="ui-list ui-list-pure ui-border-tb">
+            <li class="ui-border-t">
+                <h4>{$data.userclass}</h4>
+            </li>
+        </ul> 
+        {/volist}
+        {if condition="(sizeof($class))"}
+        <div class="ui-form-item ui-border-b">
+            <label>班级</label>
+            <div class="ui-select">
+                <select id ="class">
+                    {volist name="class" id="data"}
+                        <option>{$data.class}</option>
+                    {/volist}
+                </select>
+            </div>
+        </div> 
+        {/if}
+    </section>
+</body>
+<script src="//cdnjs.cloudflare.com/ajax/libs/zui/1.7.0/lib/jquery/jquery.js"></script>
+<script src="PUBLIC/lib/zepto.min.js"></script>
+<script src="PUBLIC/js/frozen.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#stuClass').click(function () {
+            $.ajax({
+                url: "/stuClass",
+                type: 'get',
+                dataType: 'json',
+                data: {
+                    class: $("#class").val(),
+                },
+                success: function (msg) {
+                    if(msg){
+                        window.location.reload();
+                    }else{
+                        $('#info').removeClass('hide');
+                        window.setTimeout("$('#info').addClass('hide')",1000);
+                    }
+                },
+                error:function () {
+                    $('#info').removeClass('hide');
+                    window.setTimeout("$('#info').addClass('hide')", 1000);
+                }
+            })
+        })
+    })
+</script>
+</html>

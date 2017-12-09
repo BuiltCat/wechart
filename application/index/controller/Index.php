@@ -37,6 +37,31 @@ class Index extends \think\Controller
             return $this->fetch('index');
         }
     }
+    public function userclass()
+    {
+        $user =Session::get('user');
+        if($user){
+            $sql = 'SELECT class FROM teaclass WHERE class not in ( SELECT userclass FROM stuclass WHERE userid = '.$user['userid'].' )';
+            $class = Db::query($sql);
+            $myclass = Db::table('stuclass')->where('userid',$user['userid'])->field('userclass')->select();
+            $this->assign('myclass',$myclass);
+            $this->assign('class',$class);
+            $this->assign('user',$user);
+            return $this->fetch('userclass');
+        }else{
+            return $this->fetch('index');
+        }
+    }
+    public function stuClass(){
+        $user =Session::get('user');
+        $request = Request::instance()->param();
+        $data = [
+            'userid' => $user['userid'],
+            'userclass' => $request['class']
+        ];
+        $info = Db::table('stuclass')->insert($data);
+        return $info;
+    }
     public function newuser(){
         return $this->fetch('newuser');
     }
@@ -61,6 +86,8 @@ class Index extends \think\Controller
     {
         $user =Session::get('user');
         if($user){
+            $myclass = Db::table('stuclass')->where('userid',$user['userid'])->field('userclass')->select();
+            $this->assign('myclass',$myclass);
             $file = Db::table('file')->where('userid',$user['userid'])->select();
             $this->assign('file',$file);
             return $this->fetch('upload');
@@ -76,6 +103,7 @@ class Index extends \think\Controller
         $user =Session::get('user');
         if($user){
             $file = request()->file('file');
+            var_dump($file);
             if($file){
             // 移动到框架应用根目录/public/uploads/ 目录下
                 $info = $file->validate(['size'=>536870912,'ext'=>'jpeg,jpg,png,mp4'])->move(ROOT_PATH . 'public' . DS . 'uploads/'.$user['userclass'].'/'.$user['userid'],'');
@@ -120,7 +148,8 @@ class Index extends \think\Controller
         $request = Request::instance()->param('option');
         if($teacher){
             $class = Db::table('teaclass')->where('userid','=',$teacher['userid'])->column('class');
-            $users = Db::table('user')->select();
+            $sql = "SELECT * FROM `user`,stuclass WHERE `user`.userid = stuclass.userid";
+            $users = Db::query($sql);
             if($class){
                 if($request){
                     $this->assign('choose',$request);
@@ -133,7 +162,7 @@ class Index extends \think\Controller
                 }    
             }else{
                 $this->assign('choose',null);
-                $this->assign('fileList',$fileList);
+                $this->assign('fileList',null);
             }
             $this->assign('teacher',$teacher);
             $this->assign('class',$class);
@@ -166,12 +195,12 @@ class Index extends \think\Controller
     public function deleteStu()
     {
         $request = Request::instance()->param();
-        $patharray = Db::table('file')->where($request)->find();
-        $result = Db::table('user')->where($request)->delete();
-        $result1 = Db::table('file')->where($request)->delete();
-        $path = str_replace('public/','',$patharray['filepath']);
-        $this->delDirAndFile($path);
-        return $result;
+        // $patharray = Db::table('file')->where($request)->find();
+        $result = Db::table('stuclass')->where($request)->delete();
+        // $result1 = Db::table('file')->where($request)->delete();
+        // $path = str_replace('public/','',$patharray['filepath']);
+        // $this->delDirAndFile($path);
+         return $result;
     }
     function delDirAndFile($dirName)
     {

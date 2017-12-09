@@ -31,9 +31,9 @@
                 <form id="selectform" action="/admin" method="GET">
                     <select id="selectclass" class="w3-select" style="width: auto;padding: 0 2%;margin: 0;" name="option">
                         {volist name="class" id="data"} {if condition="($data == $choose)"}
-                        <option name="choose" value="{$data}" disabled selected>{$data}班</option>
+                        <option name="choose" value="{$data}" disabled selected>{$data}</option>
                         {else /}
-                        <option name="choose" value="{$data}">{$data}班</option>
+                        <option name="choose" value="{$data}">{$data}</option>
                         {/if} {/volist}
                     </select>
                 </form>
@@ -41,7 +41,7 @@
                 <ul class="w3-ul w3-card-4 w3-white">
                     {volist name="users" id="data"} {if condition="($data.userclass == $choose)"}
                     <li  class="w3-padding-16">
-                        <span onclick="deleteStu({$data.userid})" class="w3-closebtn w3-padding w3-margin-right w3-medium">x</span>
+                        <span onclick="deleteStu({$data.userid},'{$data.userclass}')" class="w3-closebtn w3-padding w3-margin-right w3-medium">x</span>
                         <span onclick="downloadOne({$data.userid})" class="w3-closebtn w3-padding w3-margin-right w3-medium">
                             <i class="fa fa-link">
                             </i>
@@ -105,7 +105,12 @@
                 </header>
                 <div class="w3-container">
                     <p style="text-align:center">
+                        <label for="class">班级号</label>
                         <input id="class" type="text">
+                    </p>
+                    <p style="text-align:center">
+                        <label for="class">课程名</label>
+                        <input id="classname" type="text">
                     </p>
                     <p style="text-align:center">
                         <button id="classOk" class="w3-dark-grey">确认添加</button>
@@ -171,7 +176,7 @@
             type: "GET",
             dataType: "json",
             data: {
-                class: $('#class').val()
+                class: $('#class').val()+$('#classname').val()
             },
             success: function (msg) {
                 if (msg == 1) {
@@ -202,12 +207,13 @@
         })
     })
 
-    function deleteStu(id) {
+    function deleteStu(id,userclass) {
         $.ajax({
             url: "/deleteStu",
             type: "GET",
             data: {
-                userid: id
+                userid: id,
+                userclass: userclass
             },
             success: function (msg) {
                 if (msg) {

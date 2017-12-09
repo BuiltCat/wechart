@@ -74,9 +74,19 @@
     <div class="ui-dialog hide">
         <div class="ui-dialog-cnt">
             <header class="ui-dialog-hd ui-border-b">
-                <h3>更改文件名</h3>
+                <h3>上传选项</h3>
                 <i id="iconcancel" class="ui-dialog-close" data-role="button"></i>
             </header>
+            <h4 style="text-align:center">班级</h4>
+            <div class="ui-form-item ui-border-b">
+                <div class="ui-select" style="margin: 0">
+                    <select id="class">
+                        {volist name="myclass" id="data"}
+                        <option>{$data.userclass}</option>
+                        {/volist}
+                    </select>
+                </div>
+            </div>
             <div class="ui-dialog-bd">
                 <h4>新的文件名</h4>
                 <input id="newname" type="text">
@@ -146,12 +156,11 @@
             }
             var formdata = new FormData();
             formdata.append('file', $('#upfile')[0].files[0],$('#newname').val());
-            console.log(formdata);
             $.ajax({
                 url: "/upload",
                 type: "post",
                 dataType: 'json',
-                data:formdata,
+                data: formdata,
                 contentType: false,
                 processData: false,
                 xhr: xhrOnProgress(function (e) {
@@ -164,7 +173,7 @@
                 success: function (msg) {
                     if (msg === 1) {
                         $('#infodiv').removeClass('show');
-                        location.reload();
+                        //location.reload();
                     } else {
                         $('.ui-dialog').addClass('hide');
                         $('#“warid').removeClass('hide');

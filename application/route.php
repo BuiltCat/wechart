@@ -29,3 +29,5 @@ Route::any('addStu','index/addStu');
 Route::any('teReg','index/teReg');
 Route::any('regist','index/regist');
 Route::any('newuser','index/newuser');
+Route::any('userclass','index/userclass');
+Route::any('stuClass','index/stuClass');
