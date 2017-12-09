@@ -42,7 +42,7 @@
                     {volist name="users" id="data"} {if condition="($data.userclass == $choose)"}
                     <li  class="w3-padding-16">
                         <span onclick="deleteStu({$data.userid},'{$data.userclass}')" class="w3-closebtn w3-padding w3-margin-right w3-medium">x</span>
-                        <span onclick="downloadOne({$data.userid})" class="w3-closebtn w3-padding w3-margin-right w3-medium">
+                        <span onclick="downloadOne({$data.userid},'{$data.userclass}')" class="w3-closebtn w3-padding w3-margin-right w3-medium">
                             <i class="fa fa-link">
                             </i>
                         </span>
@@ -130,8 +130,19 @@
                         <input id="userid" type="text">
                     </p>
                     <p style="text-align:center">
-                        <label for="userclass">班级</label>
-                        <input id="userclass" type="text">
+                        <label for="userpw">密码</label>
+                        <input id="userpw" type="text">
+                    </p>
+                    <p style="text-align:center">
+                        <label for="usernm">姓名</label>
+                        <input id="usernm" type="text">
+                    </p>
+                    <p style="text-align:center">
+                        <label for="sex">性别</label>
+                        <select id="sex">
+                            <option value="男">男</option>
+                            <option value="女">女</option>
+                        </select>
                     </p>
                     <p style="text-align:center">
                         <button id="StuOk" class="w3-dark-grey">确认添加</button>
@@ -243,13 +254,14 @@
         })
     }
 
-    function downloadOne(id) {
+    function downloadOne(id,stucla) {
         $.ajax({
             url: "/downloadOne",
             type: "GET",
             dataType: "json",
             data: {
-                userid: id
+                userid: id,
+                class: stucla
             },
             success: function (msg) {
                 if(msg){

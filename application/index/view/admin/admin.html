@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<title>管理中心</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="PUBLIC/css/w3.css">
+<link rel="stylesheet" href="PUBLIC/font-awesome/css/font-awesome.min.css">
+<style>
+    .file {
+    position: relative;
+    display: inline-block;
+    background: #D0EEFF;
+    border: 1px solid #99D3F5;
+    border-radius: 4px;
+    padding: 4px 12px;
+    overflow: hidden;
+    color: #1E88C7;
+    text-decoration: none;
+    text-indent: 0;
+    line-height: 20px;
+    }
+    .file input {
+        position: absolute;
+        font-size: 100px;
+        right: 0;
+        top: 0;
+        opacity: 0;
+    }
+    .file:hover {
+        background: #AADFFD;
+        border-color: #78C3F3;
+        color: #004974;
+        text-decoration: none;
+    }
+</style>
+
+
+<body class="w3-light-grey">
+
+    <!-- 头 -->
+    <div class="w3-container w3-top w3-black w3-large w3-padding" style="z-index:4">
+        <button class="w3-btn w3-hide-large w3-padding-0 w3-hover-text-grey" onclick="w3_open()">
+            <i class="fa fa-bars"></i>  Menu</button>
+        <span class="w3-right">你好,管理员！</span>
+    </div>
+    <div class="w3-main" style="margin-top:43px;">
+        <hr>
+        <div>
+
+            <div id="info" class="w3-container w3-pale-blue w3-leftbar w3-border-blue hide">
+                <p id="infoMess"></p>
+            </div>
+            <div class="w3-container" style="float:left;width:100%;">
+                <h1>全部学生</h1>
+                <br>
+                <ul class="w3-ul w3-card-4 w3-white">
+                    {volist name="users" id="data"}
+                    <li class="w3-padding-16">
+                        {if condition="($data.sex == '男')"}
+                        <img src="http://cdn.w3schools.wang/img_avatar2.png" class="w3-left w3-circle w3-margin-right" style="width:35px"> {else /}
+                        <img src="http://cdn.w3schools.wang/img_avatar4.png" class="w3-left w3-circle w3-margin-right" style="width:35px"> {/if}
+                        <span class="w3-large">{$data.userid}-{$data.usernm}</span>
+                        <br>
+                    </li>
+                    {/volist}
+                </ul>
+                <br>
+                <form action="/stuupload" enctype="multipart/form-data" method="post">
+                    <input type="file" name="image" />
+                    <br>
+                    <input type="submit" value="上传" />
+                </form>
+            </div>
+            <div class="w3-container" style="float:left;width:100%">
+                <h1>全部老师</h1> 
+                {volist name="teacher" id="data"}
+                <ul class="w3-ul w3-card-4 w3-white">
+                    <li class="w3-padding-16">
+                        <span class="w3-closebtn w3-padding w3-margin-right w3-medium">x</span>
+                        <img src="http://cdn.w3schools.wang/img_avatar4.png" class="w3-left w3-circle w3-margin-right" style="width:35px">
+                        <span class="w3-large">{$data.usernm}</span>
+                        <br>
+                    </li>
+                </ul> 
+                {/volist}
+                <br>
+            </div>
+        </div>
+        <hr>
+    </div>
+</body>
+<script src="PUBLIC/js/jquery-3.2.1.min.js"></script>
+</html>

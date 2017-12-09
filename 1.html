@@ -157,7 +157,7 @@
             box-sizing: border-box;
             font-size: 14px;
             font-family: "Century Gothic", Consolas, "Liberation Mono", Courier, Verdana;
-            padding-left: 56px;
+            padding-left: 48px;
         }
 
         .exception .source-code pre li {
@@ -331,147 +331,177 @@
 
 <body>
     <div class="echo">
+        <pre class='xdebug-var-dump' dir='ltr'>
+<small>C:\wamp64\www\wechart\application\index\controller\Admin.php:14:</small>
+<b>array</b> <i>(size=2)</i>
+  'userid' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'yqx'</font> <i>(length=3)</i>
+  'userpw' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'yqxyqx123'</font> <i>(length=9)</i>
+</pre>
+        <br />
+        <font size='1'>
+            <table class='xdebug-error xe-fatal-error' dir='ltr' border='1' cellspacing='0' cellpadding='1'>
+                <tr>
+                    <th align='left' bgcolor='#f57900' colspan="5">
+                        <span style='background-color: #cc0000; color: #fce94f; font-size: x-large;'>( ! )</span> Fatal error: Class 'app\index\controller\set' not found in C:\wamp64\www\wechart\application\index\controller\Admin.php
+                        on line
+                        <i>16</i>
+                    </th>
+                </tr>
+                <tr>
+                    <th align='left' bgcolor='#e9b96e' colspan='5'>Call Stack</th>
+                </tr>
+                <tr>
+                    <th align='center' bgcolor='#eeeeec'>#</th>
+                    <th align='left' bgcolor='#eeeeec'>Time</th>
+                    <th align='left' bgcolor='#eeeeec'>Memory</th>
+                    <th align='left' bgcolor='#eeeeec'>Function</th>
+                    <th align='left' bgcolor='#eeeeec'>Location</th>
+                </tr>
+                <tr>
+                    <td bgcolor='#eeeeec' align='center'>1</td>
+                    <td bgcolor='#eeeeec' align='center'>0.0002</td>
+                    <td bgcolor='#eeeeec' align='right'>239056</td>
+                    <td bgcolor='#eeeeec'>{main}( )</td>
+                    <td title='C:\wamp64\www\wechart\public\index.php' bgcolor='#eeeeec'>...\index.php
+                        <b>:</b>0</td>
+                </tr>
+                <tr>
+                    <td bgcolor='#eeeeec' align='center'>2</td>
+                    <td bgcolor='#eeeeec' align='center'>0.0005</td>
+                    <td bgcolor='#eeeeec' align='right'>241800</td>
+                    <td bgcolor='#eeeeec'>require(
+                        <font color='#00bb00'>'C:\wamp64\www\wechart\thinkphp\start.php'</font> )</td>
+                    <td title='C:\wamp64\www\wechart\public\index.php'
+                        bgcolor='#eeeeec'>...\index.php
+                        <b>:</b>17</td>
+                </tr>
+                <tr>
+                    <td bgcolor='#eeeeec' align='center'>3</td>
+                    <td bgcolor='#eeeeec' align='center'>0.0035</td>
+                    <td bgcolor='#eeeeec' align='right'>701464</td>
+                    <td bgcolor='#eeeeec'>think\App::run( )</td>
+                    <td title='C:\wamp64\www\wechart\thinkphp\start.php' bgcolor='#eeeeec'>...\start.php
+                        <b>:</b>18</td>
+                </tr>
+                <tr>
+                    <td bgcolor='#eeeeec' align='center'>4</td>
+                    <td bgcolor='#eeeeec' align='center'>0.0163</td>
+                    <td bgcolor='#eeeeec' align='right'>1982864</td>
+                    <td bgcolor='#eeeeec'>think\App::exec( )</td>
+                    <td title='C:\wamp64\www\wechart\thinkphp\library\think\App.php' bgcolor='#eeeeec'>...\App.php
+                        <b>:</b>124</td>
+                </tr>
+                <tr>
+                    <td bgcolor='#eeeeec' align='center'>5</td>
+                    <td bgcolor='#eeeeec' align='center'>0.0163</td>
+                    <td bgcolor='#eeeeec' align='right'>1983336</td>
+                    <td bgcolor='#eeeeec'>think\App::module( )</td>
+                    <td title='C:\wamp64\www\wechart\thinkphp\library\think\App.php' bgcolor='#eeeeec'>...\App.php
+                        <b>:</b>296</td>
+                </tr>
+                <tr>
+                    <td bgcolor='#eeeeec' align='center'>6</td>
+                    <td bgcolor='#eeeeec' align='center'>0.0218</td>
+                    <td bgcolor='#eeeeec' align='right'>2511776</td>
+                    <td bgcolor='#eeeeec'>think\App::invokeMethod( )</td>
+                    <td title='C:\wamp64\www\wechart\thinkphp\library\think\App.php' bgcolor='#eeeeec'>...\App.php
+                        <b>:</b>411</td>
+                </tr>
+                <tr>
+                    <td bgcolor='#eeeeec' align='center'>7</td>
+                    <td bgcolor='#eeeeec' align='center'>0.0219</td>
+                    <td bgcolor='#eeeeec' align='right'>2512552</td>
+                    <td bgcolor='#eeeeec'>
+                        <a href='http://www.php.net/ReflectionMethod.invokeArgs' target='_new'>invokeArgs</a>
+                        ( )</td>
+                    <td title='C:\wamp64\www\wechart\thinkphp\library\think\App.php' bgcolor='#eeeeec'>...\App.php
+                        <b>:</b>197</td>
+                </tr>
+                <tr>
+                    <td bgcolor='#eeeeec' align='center'>8</td>
+                    <td bgcolor='#eeeeec' align='center'>0.0219</td>
+                    <td bgcolor='#eeeeec' align='right'>2512656</td>
+                    <td bgcolor='#eeeeec'>app\index\controller\Admin->login( )</td>
+                    <td title='C:\wamp64\www\wechart\thinkphp\library\think\App.php'
+                        bgcolor='#eeeeec'>...\App.php
+                        <b>:</b>197</td>
+                </tr>
+            </table>
+        </font>
     </div>
     <div class="exception">
         <div class="message">
 
             <div class="info">
                 <div>
-                    <h2>[2]&nbsp;
+                    <h2>[1]&nbsp;
                         <abbr title="think\exception\ErrorException">ErrorException</abbr> in
-                        <a class="toggle" title="C:\wamp64\www\wechart\thinkphp\library\think\File.php line 120">File.php line 120</a>
+                        <a class="toggle" title="C:\wamp64\www\wechart\application\index\controller\Admin.php line 16">Admin.php line 16</a>
                     </h2>
                 </div>
                 <div>
-                    <h1>mkdir(): Invalid argument</h1>
+                    <h1>Class 'app\index\controller\set' not found</h1>
                 </div>
             </div>
 
         </div>
         <div class="source-code">
-            <pre class="prettyprint lang-php"><ol start="111"><li class="line-111"><code>     * @param  string   $path    目录
-</code></li><li class="line-112"><code>     * @return boolean
-</code></li><li class="line-113"><code>     */
-</code></li><li class="line-114"><code>    protected function checkPath($path)
-</code></li><li class="line-115"><code>    {
-</code></li><li class="line-116"><code>        if (is_dir($path)) {
-</code></li><li class="line-117"><code>            return true;
-</code></li><li class="line-118"><code>        }
-</code></li><li class="line-119"><code>
-</code></li><li class="line-120"><code>        if (mkdir($path, 0755, true)) {
-</code></li><li class="line-121"><code>            return true;
-</code></li><li class="line-122"><code>        } else {
-</code></li><li class="line-123"><code>            $this-&gt;error = ['directory {:path} creation failed', ['path' =&gt; $path]];
-</code></li><li class="line-124"><code>            return false;
-</code></li><li class="line-125"><code>        }
-</code></li><li class="line-126"><code>    }
-</code></li><li class="line-127"><code>
-</code></li><li class="line-128"><code>    /**
-</code></li><li class="line-129"><code>     * 获取文件类型信息
-</code></li></ol></pre>
+            <pre class="prettyprint lang-php"><ol start="7"><li class="line-7"><code>class Admin extends \think\Controller
+</code></li><li class="line-8"><code>{
+</code></li><li class="line-9"><code>    public function index(){
+</code></li><li class="line-10"><code>        return $this-&gt;fetch('login');
+</code></li><li class="line-11"><code>    }
+</code></li><li class="line-12"><code>    public function login(){
+</code></li><li class="line-13"><code>        $info = Request::instance()-&gt;param();
+</code></li><li class="line-14"><code>        var_dump($info);
+</code></li><li class="line-15"><code>        if($info['userid'] == 'yqx'&amp;&amp;$info['userpw'] == 'yqxyqx123'){
+</code></li><li class="line-16"><code>            set::Session('info',$info);
+</code></li><li class="line-17"><code>            return 1;
+</code></li><li class="line-18"><code>        }else{
+</code></li><li class="line-19"><code>            return 0;
+</code></li><li class="line-20"><code>        }
+</code></li><li class="line-21"><code>    }
+</code></li><li class="line-22"><code>    public function Administration(){
+</code></li><li class="line-23"><code>
+</code></li><li class="line-24"><code>    }
+</code></li><li class="line-25"><code>}</code></li></ol></pre>
         </div>
         <div class="trace">
             <h2>Call Stack</h2>
             <ol>
                 <li>in
-                    <a class="toggle" title="C:\wamp64\www\wechart\thinkphp\library\think\File.php line 120">File.php line 120</a>
+                    <a class="toggle" title="C:\wamp64\www\wechart\application\index\controller\Admin.php line 16">Admin.php line 16</a>
                 </li>
                 <li>
                     at
-                    <abbr title="think\Error">Error</abbr>::appError(2, '
-                    <a class="toggle" title="mkdir(): Invalid argument">mkdir(): Invalid arg...</a>', '
-                    <a class="toggle" title="C:\wamp64\www\wechart\thinkphp\library\think\File.php">C:\wamp64\www\wechar...</a>', 120, ['path' => '
-                    <a class="toggle" title="C:\wamp64\www\wechart\public\155042242计算机科学与技术\155042242">C:\wamp64\www\wechar...</a>']) </li>
-                <li>
-                    at mkdir('
-                    <a class="toggle" title="C:\wamp64\www\wechart\public\155042242计算机科学与技术\155042242">C:\wamp64\www\wechar...</a>', 493,
-                    <em>true</em>) in
-                    <a class="toggle" title="C:\wamp64\www\wechart\thinkphp\library\think\File.php line 120">File.php line 120</a>
-                </li>
-                <li>
-                    at
-                    <abbr title="think\File">File</abbr>->checkPath('
-                    <a class="toggle" title="C:\wamp64\www\wechart\public\155042242计算机科学与技术\155042242">C:\wamp64\www\wechar...</a>') in
-                    <a class="toggle" title="C:\wamp64\www\wechart\thinkphp\library\think\File.php line 320">File.php line 320</a>
-                </li>
-                <li>
-                    at
-                    <abbr title="think\File">File</abbr>->move('
-                    <a class="toggle" title="C:\wamp64\www\wechart\public\155042242计算机科学与技术\155042242">C:\wamp64\www\wechar...</a>', '') in
-                    <a class="toggle" title="C:\wamp64\www\wechart\application\index\controller\Index.php line 112">Index.php line 112</a>
-                </li>
-                <li>
-                    at
-                    <abbr title="app\index\controller\Index">Index</abbr>->upload() </li>
-                <li>
-                    at
-                    <abbr title="ReflectionMethod">ReflectionMethod</abbr>->invokeArgs(
-                    <em>object</em>(
-                    <abbr title="app\index\controller\Index">Index</abbr>), []) in
-                    <a class="toggle" title="C:\wamp64\www\wechart\thinkphp\library\think\App.php line 197">App.php line 197</a>
-                </li>
-                <li>
-                    at
-                    <abbr title="think\App">App</abbr>::invokeMethod([
-                    <em>object</em>(
-                    <abbr title="app\index\controller\Index">Index</abbr>), 'upload'], []) in
-                    <a class="toggle" title="C:\wamp64\www\wechart\thinkphp\library\think\App.php line 411">App.php line 411</a>
-                </li>
-                <li>
-                    at
-                    <abbr title="think\App">App</abbr>::module([
-                    <em>null</em>, 'index', 'upload'], ['app_host' => '', 'app_debug' =>
-                    <em>true</em>, 'app_trace' =>
-                    <em>false</em>, ...],
-                    <em>false</em>) in
-                    <a class="toggle" title="C:\wamp64\www\wechart\thinkphp\library\think\App.php line 296">App.php line 296</a>
-                </li>
-                <li>
-                    at
-                    <abbr title="think\App">App</abbr>::exec(['type' => 'module', 'module' => [
-                    <em>null</em>, 'index', 'upload'], 'convert' =>
-                    <em>false</em>], ['app_host' => '', 'app_debug' =>
-                    <em>true</em>, 'app_trace' =>
-                    <em>false</em>, ...]) in
-                    <a class="toggle" title="C:\wamp64\www\wechart\thinkphp\library\think\App.php line 124">App.php line 124</a>
-                </li>
-                <li>
-                    at
-                    <abbr title="think\App">App</abbr>::run() in
-                    <a class="toggle" title="C:\wamp64\www\wechart\thinkphp\start.php line 18">start.php line 18</a>
-                </li>
-                <li>
-                    at require('
-                    <a class="toggle" title="C:\wamp64\www\wechart\thinkphp\start.php">C:\wamp64\www\wechar...</a>') in
-                    <a class="toggle" title="C:\wamp64\www\wechart\public\index.php line 17">index.php line 17</a>
-                </li>
+                    <abbr title="think\Error">Error</abbr>::appShutdown() </li>
             </ol>
         </div>
     </div>
 
-    <div class="exception-var">
-        <h2>Exception Datas</h2>
-        <table>
-            <caption>Error Context</caption>
-            <tbody>
-                <tr>
-                    <td>path</td>
-                    <td>
-                        C:\wamp64\www\wechart\public\155042242计算机科学与技术\155042242 </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
 
     <div class="exception-var">
         <h2>Environment Variables</h2>
         <div>
-            <div class="clearfix">
-                <div class="col-md-3">
-                    <strong>GET Data</strong>
+            <h3 class="subheading">GET Data</h3>
+            <div>
+                <div class="clearfix">
+                    <div class="col-md-3">
+                        <strong>userid</strong>
+                    </div>
+                    <div class="col-md-9">
+                        <small>
+                            yqx </small>
+                    </div>
                 </div>
-                <div class="col-md-9">
-                    <small>empty</small>
+                <div class="clearfix">
+                    <div class="col-md-3">
+                        <strong>userpw</strong>
+                    </div>
+                    <div class="col-md-9">
+                        <small>
+                            yqxyqx123 </small>
+                    </div>
                 </div>
             </div>
         </div>
@@ -486,17 +516,12 @@
             </div>
         </div>
         <div>
-            <h3 class="subheading">Files</h3>
-            <div>
-                <div class="clearfix">
-                    <div class="col-md-3">
-                        <strong>file</strong>
-                    </div>
-                    <div class="col-md-9">
-                        <small>
-                            { &quot;name&quot;: &quot;logo.png&quot;, &quot;type&quot;: &quot;image\/png&quot;, &quot;tmp_name&quot;: &quot;C:\\wamp64\\tmp\\phpEDE5.tmp&quot;,
-                            &quot;error&quot;: 0, &quot;size&quot;: 5207 } </small>
-                    </div>
+            <div class="clearfix">
+                <div class="col-md-3">
+                    <strong>Files</strong>
+                </div>
+                <div class="col-md-9">
+                    <small>empty</small>
                 </div>
             </div>
         </div>
@@ -509,26 +534,18 @@
                     </div>
                     <div class="col-md-9">
                         <small>
-                            b46sre9g2rhmaclkbgkd45um11 </small>
+                            iski7j9j1h829fpl0k6tnd47l1 </small>
                     </div>
                 </div>
             </div>
         </div>
         <div>
-            <h3 class="subheading">Session</h3>
-            <div>
-                <div class="clearfix">
-                    <div class="col-md-3">
-                        <strong>think</strong>
-                    </div>
-                    <div class="col-md-9">
-                        <small>
-                            { &quot;user&quot;: { &quot;userid&quot;: &quot;155042242&quot;, &quot;userpw&quot;: &quot;123456&quot;, &quot;usernm&quot;:
-                            &quot;\u738b\u949f\u6d69&quot;, &quot;sex&quot;: &quot;\u7537&quot; }, &quot;user['class']&quot;:
-                            &quot;155042242\u8ba1\u7b97\u673a\u79d1\u5b66\u4e0e\u6280\u672f&quot;, &quot;class&quot;: &quot;155042242\u8ba1\u7b97\u673a\u79d1\u5b66\u4e0e\u6280\u672f&quot;,
-                            &quot;teacher&quot;: { &quot;userid&quot;: &quot;wangli&quot;, &quot;userpw&quot;: &quot;123456&quot;,
-                            &quot;usernm&quot;: &quot;\u738b\u8389&quot; } } </small>
-                    </div>
+            <div class="clearfix">
+                <div class="col-md-3">
+                    <strong>Session</strong>
+                </div>
+                <div class="col-md-9">
+                    <small>empty</small>
                 </div>
             </div>
         </div>
@@ -564,29 +581,11 @@
                 </div>
                 <div class="clearfix">
                     <div class="col-md-3">
-                        <strong>CONTENT_LENGTH</strong>
-                    </div>
-                    <div class="col-md-9">
-                        <small>
-                            5388 </small>
-                    </div>
-                </div>
-                <div class="clearfix">
-                    <div class="col-md-3">
                         <strong>HTTP_ACCEPT</strong>
                     </div>
                     <div class="col-md-9">
                         <small>
                             application/json, text/javascript, */*; q=0.01 </small>
-                    </div>
-                </div>
-                <div class="clearfix">
-                    <div class="col-md-3">
-                        <strong>HTTP_ORIGIN</strong>
-                    </div>
-                    <div class="col-md-9">
-                        <small>
-                            http://127.0.0.1 </small>
                     </div>
                 </div>
                 <div class="clearfix">
@@ -604,16 +603,7 @@
                     </div>
                     <div class="col-md-9">
                         <small>
-                            Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36 </small>
-                    </div>
-                </div>
-                <div class="clearfix">
-                    <div class="col-md-3">
-                        <strong>CONTENT_TYPE</strong>
-                    </div>
-                    <div class="col-md-9">
-                        <small>
-                            multipart/form-data; boundary=----WebKitFormBoundaryRA8yMHBgkILo48TW </small>
+                            Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36 </small>
                     </div>
                 </div>
                 <div class="clearfix">
@@ -622,7 +612,7 @@
                     </div>
                     <div class="col-md-9">
                         <small>
-                            http://127.0.0.1/uppage?class=155042242%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6%E4%B8%8E%E6%8A%80%E6%9C%AF </small>
+                            http://127.0.0.1/admin/index </small>
                     </div>
                 </div>
                 <div class="clearfix">
@@ -649,7 +639,7 @@
                     </div>
                     <div class="col-md-9">
                         <small>
-                            PHPSESSID=b46sre9g2rhmaclkbgkd45um11 </small>
+                            PHPSESSID=iski7j9j1h829fpl0k6tnd47l1 </small>
                     </div>
                 </div>
                 <div class="clearfix">
@@ -658,8 +648,13 @@
                     </div>
                     <div class="col-md-9">
                         <small>
-                            C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\nodejs\;C:\Program
-                            Files\Git\cmd;C:\Windows\system32\config\systemprofile\AppData\Local\Microsoft\WindowsApps </small>
+                            C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program
+                            Files (x86)\ATI Technologies\ATI.ACE\Core-Static;C:\Program Files (x86)\Intel\Intel(R) Management
+                            Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program
+                            Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management
+                            Engine Components\IPT;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Program Files\Microsoft
+                            SQL Server\130\Tools\Binn\;C:\Program Files\TortoiseSVN\bin;C:\WINDOWS\system32\config\systemprofile\AppData\Local\Microsoft\WindowsApps
+                            </small>
                     </div>
                 </div>
                 <div class="clearfix">
@@ -668,7 +663,7 @@
                     </div>
                     <div class="col-md-9">
                         <small>
-                            C:\Windows </small>
+                            C:\WINDOWS </small>
                     </div>
                 </div>
                 <div class="clearfix">
@@ -677,7 +672,7 @@
                     </div>
                     <div class="col-md-9">
                         <small>
-                            C:\Windows\system32\cmd.exe </small>
+                            C:\WINDOWS\system32\cmd.exe </small>
                     </div>
                 </div>
                 <div class="clearfix">
@@ -695,7 +690,7 @@
                     </div>
                     <div class="col-md-9">
                         <small>
-                            C:\Windows </small>
+                            C:\WINDOWS </small>
                     </div>
                 </div>
                 <div class="clearfix">
@@ -813,7 +808,7 @@
                     </div>
                     <div class="col-md-9">
                         <small>
-                            56505 </small>
+                            50913 </small>
                     </div>
                 </div>
                 <div class="clearfix">
@@ -822,7 +817,16 @@
                     </div>
                     <div class="col-md-9">
                         <small>
-                            /upload </small>
+                            /tologin </small>
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <div class="col-md-3">
+                        <strong>REDIRECT_QUERY_STRING</strong>
+                    </div>
+                    <div class="col-md-9">
+                        <small>
+                            userid=yqx&amp;userpw=yqxyqx123 </small>
                     </div>
                 </div>
                 <div class="clearfix">
@@ -849,7 +853,7 @@
                     </div>
                     <div class="col-md-9">
                         <small>
-                            POST </small>
+                            GET </small>
                     </div>
                 </div>
                 <div class="clearfix">
@@ -858,7 +862,7 @@
                     </div>
                     <div class="col-md-9">
                         <small>
-                        </small>
+                            userid=yqx&amp;userpw=yqxyqx123 </small>
                     </div>
                 </div>
                 <div class="clearfix">
@@ -867,7 +871,7 @@
                     </div>
                     <div class="col-md-9">
                         <small>
-                            /upload </small>
+                            /tologin?userid=yqx&amp;userpw=yqxyqx123 </small>
                     </div>
                 </div>
                 <div class="clearfix">
@@ -885,7 +889,7 @@
                     </div>
                     <div class="col-md-9">
                         <small>
-                            /upload </small>
+                            /tologin </small>
                     </div>
                 </div>
                 <div class="clearfix">
@@ -894,7 +898,7 @@
                     </div>
                     <div class="col-md-9">
                         <small>
-                            redirect:\index.php\upload </small>
+                            redirect:\index.php\tologin </small>
                     </div>
                 </div>
                 <div class="clearfix">
@@ -903,7 +907,7 @@
                     </div>
                     <div class="col-md-9">
                         <small>
-                            /index.php/upload </small>
+                            /index.php/tologin </small>
                     </div>
                 </div>
                 <div class="clearfix">
@@ -912,7 +916,7 @@
                     </div>
                     <div class="col-md-9">
                         <small>
-                            1512792737.769 </small>
+                            1512826628.685 </small>
                     </div>
                 </div>
                 <div class="clearfix">
@@ -921,7 +925,7 @@
                     </div>
                     <div class="col-md-9">
                         <small>
-                            1512792737 </small>
+                            1512826628 </small>
                     </div>
                 </div>
             </div>
@@ -963,7 +967,7 @@
                     </div>
                     <div class="col-md-9">
                         <small>
-                            1512792737.7744 </small>
+                            1512826628.6883 </small>
                     </div>
                 </div>
                 <div class="clearfix">
@@ -972,7 +976,7 @@
                     </div>
                     <div class="col-md-9">
                         <small>
-                            277080 </small>
+                            276904 </small>
                     </div>
                 </div>
                 <div class="clearfix">
@@ -1147,7 +1151,7 @@
         <span>{ 十年磨一剑-为API开发设计的高性能框架 }</span>
     </div>
     <script>
-        var LINE = 120;
+        var LINE = 16;
 
         function $(selector, node) {
             var elements;

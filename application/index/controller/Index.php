@@ -6,6 +6,7 @@ use \think\Session;
 
 class Index extends \think\Controller
 {
+    /****************************学生*********************/
     // 学生端主页
     // return 页面
     public function index()
@@ -90,7 +91,7 @@ class Index extends \think\Controller
         if($user){
             $class = Request::instance()->param('class');
             Session::set('class',$class);
-            $file = Db::table('file')->where('userid',$user['userid'])->select();
+            $file = Db::table('file')->where('userid',$user['userid'])->where('class',$class)->select();
             $this->assign('file',$file);
             return $this->fetch('upload');
         }else{
@@ -139,15 +140,16 @@ class Index extends \think\Controller
     public function delete(){
         $delete = request()->delete();
         $info = Db::table('file')->where($delete)->find();
-        $path = str_replace('public/','',$info['filepath']).'/'.$info['filename'];
-        if(unlink($path)){
+        $path = str_replace('public'.DS,'',$info['filepath']).DS.$info['filename'];
+        $path = iconv("utf-8","gb2312//IGNORE",$path);
+        if(@unlink($path)){
             $msg = Db::table('file')->where($delete)->delete();
             return $msg;
         }else {
             return false;
         }
     }
-    
+    /****************************老师*********************/
     public function admin(){
         $teacher =Session::get('teacher');
         $request = Request::instance()->param('option');
@@ -157,7 +159,7 @@ class Index extends \think\Controller
             $users = Db::query($sql);
             if($class){
                 if($request){
-                    $this->assign('choose',$request);
+                    $this->assign('choose',$request);   
                     $fileList = Db::table('file')->field('userid,filename,update,class')->select();
                     $this->assign('fileList',$fileList);
                 }else{
@@ -215,7 +217,7 @@ class Index extends \think\Controller
                     if ( is_dir( "$dirName/$item" ) ) {
                         $this->delDirAndFile( "$dirName/$item" );
                     } else {
-                        unlink( "$dirName/$item");
+                        @unlink( "$dirName/$item");
                     }
                 }
             }
@@ -273,7 +275,9 @@ class Index extends \think\Controller
         $info = Db::table('file')->where($request)->find();
         if($info){
             $zipname = $info['userid'].'.zip';
-            $zippath = str_replace('public/','',$info['filepath']).'/';
+            $zippath = str_replace('public'.DS,'',$info['filepath']);
+            $zippath = iconv("utf-8","gb2312//IGNORE",$zippath);
+            @unlink($request['userid'].'.zip');
             $zip=new \ZipArchive();
             if($zip->open($zipname, \ZipArchive::CREATE)){
                 $this->addFileToZip($zippath, $zip); //调用方法，对要打包的根目录进行操作，并将ZipArchive的对象传递给方法
@@ -287,30 +291,29 @@ class Index extends \think\Controller
     public function downloadAll()
     {
         $request = Request::instance()->param();
-        $sql = "select * from user,file where user.userid = file.userid and user.userclass = ".$request['class'];
-        if(Db::query($sql)){
+        $info = Db::table('file')->where($request)->find();
+        if($info){
             $zipname = $request['class'];
-            $zippath = 'uploads/'.$zipname.'/';
             $zipname = $zipname.'.zip';
+            $zippath = iconv("utf-8","gb2312//IGNORE",$request['class']);
             $zip=new \ZipArchive();
             if($zip->open($zipname, \ZipArchive::CREATE)){
-                $this->addFileToZip($zippath, $zip); //调用方法，对要打包的根目录进行操作，并将ZipArchive的对象传递给方法
+                // $this->addFileToZip($zippath, $zip); //调用方法，对要打包的根目录进行操作，并将ZipArchive的对象传递给方法
                 $zip->close(); //关闭处理的zip文件
             }
             return $zipname;
         }else{
             return 0;
         }
-        
     }
     function addFileToZip($path,$zip){
         $handler=opendir($path); //打开当前文件夹由$path指定。
         while(($filename=readdir($handler))!==false){
             if($filename != "." && $filename != ".."){//文件夹文件名字为'.'和‘..’，不要对他们进行操作
-                if(is_dir($path."/".$filename)){// 如果读取的某个对象是文件夹，则递归
-                    $this->addFileToZip($path."/".$filename, $zip);
+                if(is_dir($path.DS.$filename)){// 如果读取的某个对象是文件夹，则递归
+                    $this->addFileToZip($path.DS.$filename, $zip);
                 }else{ //将文件加入zip对象
-                    $zip->addFile($path."/".$filename);
+                    $zip->addFile($path.DS.$filename);
                 }
             }
         }
@@ -319,6 +322,7 @@ class Index extends \think\Controller
     function downfile()
     {
         $fileurl = Request::instance()->param('fileurl');
+        $fileurl =  iconv("utf-8","gb2312//IGNORE",$fileurl);
         $file=fopen($fileurl,"r");
         header("Content-Type: application/octet-stream");
         header("Accept-Ranges: bytes");
