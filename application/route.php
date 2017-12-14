@@ -38,3 +38,7 @@ Route::any('stuupload','admin/upload');
 Route::any('delectMany','admin/delectMany');
 Route::any('changepw','index/changepw');
 Route::any('toChange','index/toChange');
+Route::any('teachangepw','index/teachangepw');
+Route::any('teatoChange','index/teatoChange');
+Route::any('adchangepw','admin/adchangepw');
+Route::any('adtoChange','admin/adtoChange');

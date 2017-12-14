@@ -225,6 +225,29 @@ class Index extends \think\Controller
             return 0;
         }
     }
+    public function teachangepw()
+    {
+        return $this->fetch('teachangepw');
+    }
+    public function teatoChange()
+    {
+        $request = Request::instance()->param();
+        $toExist = [
+            'userid' => $request['userid'],
+            'userpw' => $request['olduserpw']
+        ];
+        $isExist = Db::table('teacher')->where($toExist)->find();
+        if($isExist){
+            $result = Db::table('teacher')->where('userid',$request['userid'])->update(['userpw'=>$request['userpw']]);
+            if($request){
+                return 1;
+            }else{
+                return '插入失败,请重试!';
+            }
+        }else{
+            return '密码不正确';
+        }
+    }
     // 删除学生
     public function deleteStu()
     {

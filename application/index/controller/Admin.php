@@ -102,4 +102,27 @@ class Admin extends \think\Controller
         }
         $this->success('删除成功', '/Administration');
     }
+    public function adchangepw()
+    {
+        return $this->fetch('adchangepw');
+    }
+    public function adtoChange()
+    {
+        $request = Request::instance()->param();
+        $toExist = [
+            'userid' => $request['userid'],
+            'userpw' => $request['olduserpw']
+        ];
+        $isExist = Db::table('admin')->where($toExist)->find();
+        if($isExist){
+            $result = Db::table('admin')->where('userid',$request['userid'])->update(['userpw'=>$request['userpw']]);
+            if($request){
+                return 1;
+            }else{
+                return '插入失败,请重试!';
+            }
+        }else{
+            return '密码不正确';
+        }
+    }
 }

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>老师-注册</title>
+    <link rel="stylesheet" href="PUBLIC/css/w3.css">
+    <style>
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .full {
+            width: 450px;
+            margin: 100px auto;
+            height: 470px;
+        }
+
+        #login {
+            width: 100px;
+            margin-right: 170px;
+        }
+
+        a {
+            height: 34px;
+            line-height: 34px;
+            display: inline-block;
+            width: 100px;
+        }
+
+        #background {
+            position: absolute;
+            z-index: -1;
+        }
+
+        .hide {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="background"></canvas>
+    <div id="info" class="w3-container w3-pale-blue w3-leftbar w3-border-blue hide">
+        <p id="infoMess"></p>
+    </div>
+    <div class="w3-card-4 full">
+        <div class="w3-container">
+            <h1>登陆</h1>
+            <label class="w3-label w3-text-blue">
+                <b>用户名</b>
+            </label>
+            <input id="acc" class="w3-input w3-border" type="text">
+            <label class="w3-label w3-text-blue">
+                <b>旧密码</b>
+            </label>
+            <input id="opw" class="w3-input w3-border" type="password">
+            <label class="w3-label w3-text-blue">
+                <b>新密码</b>
+            </label>
+            <input id="pw" class="w3-input w3-border" type="text">
+            <div>
+                <br>
+                <button id="login" class="w3-btn w3-blue">确认</button>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="PUBLIC/js/pointLine.js"></script>
+<script src="PUBLIC/js/jquery-3.2.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#login').click(function () {
+            var userid = $('#acc').val()
+            var olduserpw = $('#opw').val()
+            var userpw = $('#pw').val()
+            if (userid.length === 0) {
+                $('#infoMess').text('用户名为空!')
+                $('#info').removeClass('hide')
+                window.setTimeout("$('#info').addClass('hide')", 2000)
+            } else if (userid.length > 20) {
+                $('#infoMess').text('用户名不能超过二十个字符!')
+                $('#info').removeClass('hide')
+                window.setTimeout("$('#info').addClass('hide')", 2000)
+            } else {
+                if (userpw.length === 0) {
+                    $('#infoMess').text('新密码为空!')
+                    $('#info').removeClass('hide')
+                    window.setTimeout("$('#info').addClass('hide')", 2000)
+                } else {
+                    if (olduserpw.length === 0) {
+                        $('#infoMess').text('旧密码为空!')
+                        $('#info').removeClass('hide')
+                        window.setTimeout("$('#info').addClass('hide')", 2000)
+                    } else {
+                        $.ajax({
+                            url: "/adtoChange",
+                            type: 'get',
+                            dataType: 'json',
+                            data: {
+                                userid: userid,
+                                olduserpw: olduserpw,
+                                userpw: userpw,
+                            },
+                            success: function (msg) {
+                                if (msg === 1) {
+                                    window.location.href = '/telogin'
+                                } else {
+                                    $('#infoMess').text(msg)
+                                    $('#info').removeClass('hide')
+                                    window.setTimeout("$('#info').addClass('hide')", 2000)
+                                }
+                            }
+                        })
+                    }
+                }
+            }
+        })
+    })
+</script>
+
+</html>
