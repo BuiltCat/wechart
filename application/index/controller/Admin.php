@@ -14,7 +14,8 @@ class Admin extends \think\Controller
     }
     public function login(){
         $info = Request::instance()->param();
-        if($info['userid'] == 'yqx'&&$info['userpw'] == 'yqxyqx123'){
+        $isExist = Db::table('admin')->where($info)->find();
+        if($isExist){
             Session::set('info',$info);
             return 1;
         }else{

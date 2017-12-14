@@ -124,6 +124,10 @@
                                     $('#infoMess').text("用户已存在！")
                                     $('#info').removeClass('hide')
                                     window.setTimeout("$('#info').addClass('hide')", 2000)
+                                }else if(msg == 400) {
+                                    $('#infoMess').text("注册码错误请重试!")
+                                    $('#info').removeClass('hide')
+                                    window.setTimeout("$('#info').addClass('hide')", 2000)
                                 }else{
                                     window.location.href = '/telogin'
                                 }

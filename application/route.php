@@ -36,3 +36,5 @@ Route::any('/Administration','admin/Administration');
 Route::any('tologin','admin/login');
 Route::any('stuupload','admin/upload');
 Route::any('delectMany','admin/delectMany');
+Route::any('changepw','index/changepw');
+Route::any('toChange','index/toChange');

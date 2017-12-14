@@ -26,6 +26,29 @@ class Index extends \think\Controller
             return 0;
         }
     }
+    public function changepw()
+    {
+        return $this->fetch('changepw');
+    }
+    public function toChange()
+    {
+        $request = Request::instance()->param();
+        $toExist = [
+            'userid' => $request['userid'],
+            'userpw' => $request['olduserpw']
+        ];
+        $isExist = Db::table('user')->where($toExist)->find();
+        if($isExist){
+            $result = Db::table('user')->where('userid',$request['userid'])->update(['userpw'=>$request['userpw']]);
+            if($request){
+                return 1;
+            }else{
+                return '插入失败,请重试!';
+            }
+        }else{
+            return '密码不正确';
+        }
+    }
     // 个人中心
     // return 页面
     public function myself()
@@ -161,15 +184,17 @@ class Index extends \think\Controller
             $users = Db::query($sql);
             if($class){
                 if($request){
-                    $this->assign('choose',$request);   
+                    $this->assign('choose',$request);
+                    Session::set('setClass',$request);   
                     $fileList = Db::table('file')->field('userid,filename,update,class')->select();
                     $this->assign('fileList',$fileList);
                 }else{
                     $this->assign('choose',$class[0]);
+                    Session::set('setClass',$class[0]);   
                     $fileList = Db::table('file')->field('userid,filename,update,class')->select();
                     $this->assign('fileList',$fileList);
                 }    
-            }else{
+            }else{  
                 $this->assign('choose',null);
                 $this->assign('fileList',null);
             }
@@ -254,21 +279,30 @@ class Index extends \think\Controller
     }
     public function addStu(){
         $teacher =Session::get('teacher');
-        $request = Request::instance()->param();
-        $isExit=Db::table('user')->where('userid',$request['userid'])->find();
-        if($isExit){
-            return "已存在";
-        }else{
-            if($request){
-                $request['userpw'] = "123456";
-                $request['need'] = 0;
-                $result = Db::table('user')->insert($request);
-                if($result){
-                     return 1;
-                }else{
-                    return 0;
+        $class = Session::get('setClass');
+        if($class){
+            $request = Request::instance()->param();
+            $isExit=Db::table('user')->where('userid',$request['userid'])->find();
+            if($isExit){
+                return 30;
+            }else{
+                if($request){
+                    $request['userpw'] = "123456";
+                    $data = [
+                        'userid' => $request['userid'],
+                        'userclass' => $class
+                    ];
+                    $result = Db::table('user')->insert($request);
+                    $result1 = Db::table('stuclass')->insert($data);
+                    if($result&&$result1){
+                        return 1;
+                    }else{
+                        return 20;
+                    }
                 }
             }
+        }else{
+            return 40;
         }
     }
     public function downloadOne()
@@ -346,6 +380,8 @@ class Index extends \think\Controller
                 unset($request['zcm']);
                 $msg = Db::table('teacher')->insert($request);
                 return $msg;     
+            }else{
+                return 400;
             }
         }else{
             return 500;

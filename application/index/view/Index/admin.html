@@ -128,19 +128,8 @@
                         <input id="userid" type="text">
                     </p>
                     <p style="text-align:center">
-                        <label for="userpw">密码</label>
-                        <input id="userpw" type="text">
-                    </p>
-                    <p style="text-align:center">
                         <label for="usernm">姓名</label>
                         <input id="usernm" type="text">
-                    </p>
-                    <p style="text-align:center">
-                        <label for="sex">性别</label>
-                        <select id="sex">
-                            <option value="男">男</option>
-                            <option value="女">女</option>
-                        </select>
                     </p>
                     <p style="text-align:center">
                         <button id="StuOk" class="w3-dark-grey">确认添加</button>
@@ -200,20 +189,30 @@
         })
     })
     $('#StuOk').click(function () {
-        $.ajax({
-            url: "/addStu",
-            type: "GET",
-            dataType: "json",
-            data: {
-                userid: $('#userid').val(),
-                userclass: $('#userclass').val()
-            },
-            success: function (msg) {
-                if (msg) {
-                    location.reload();
+        if($('#userid').val()&& $('#usernm').val()){
+            $.ajax({
+                url: "/addStu",
+                type: "GET",
+                dataType: "json",
+                data: {
+                    userid: $('#userid').val(),
+                    usernm: $('#usernm').val()
+                },
+                success: function (msg) {
+                    if (msg === 20) {
+                        alert('服务器出错请重试');
+                    }else if(msg === 30) {
+                        alert('用户已存在');
+                    } else if (msg === 40) {
+                        alert('请选择班级');
+                    } else if (msg) {
+                        location.reload();
+                    }
                 }
-            }
-        })
+            })
+        }else{
+            alert('请输入全部信息!');
+        }
     })
 
     function deleteStu(id,userclass) {

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>修改密码</title>
+    <link rel="stylesheet" href="PUBLIC/css/frozen.css">
+    <style>
+        .center {
+            text-align: center;
+        }
+
+        .tohide {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="ui-header ui-header-positive ui-border-b">
+        <h1>修改密码</h1>
+    </header>
+    <footer class="ui-footer ui-footer-stable ui-btn-group ui-border-t">
+        <button id="newuser" class="ui-btn-lg ui-btn-primary">
+            确认
+        </button>
+    </footer>
+    <section class="ui-container">
+        <div class="center">
+            <img src="PUBLIC/img/logo.png" alt="登陆图标">
+        </div>
+        <div class="ui-form-item ui-border-b">
+            <label>
+                学号
+            </label>
+            <input id="userid" type="text" placeholder="请输入您的学号">
+            <a onclick="$('#userid').val('')" class="ui-icon-close">
+            </a>
+        </div>
+        <div class="ui-form-item ui-border-b">
+            <label>
+                旧密码
+            </label>
+            <input id="olduserpw" type="text" placeholder="请输入您的老密码">
+            <a onclick="$('#usernm').val('')" class="ui-icon-close">
+            </a>
+        </div>
+        <div class="ui-form-item ui-border-b">
+            <label>
+                新密码
+            </label>
+            <input id="userpw" placeholder="请输入您的新密码"></input>
+            <a onclick="$('#userpw').val('')" class="ui-icon-close"></a>
+        </div>
+        <div id="warn" class="ui-tips ui-tips-warn tohide">
+            <i></i>
+            <span id="warninfo"></span>
+        </div>
+    </section>
+</body>
+<script src="//cdnjs.cloudflare.com/ajax/libs/zui/1.7.0/lib/jquery/jquery.js"></script>
+<script src="PUBLIC/lib/zepto.min.js"></script>
+<script src="PUBLIC/js/frozen.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#newuser').click(function () {
+            var userid = $('#userid').val();
+            var olduserpw = $('#olduserpw').val();
+            var userpw = $('#userpw').val();
+            var userclass = $('#userclass').val();
+            var sex = $('#sex').val();
+            var warninfo = $('#warninfo');
+            if (userid.length === 9) {
+                if (olduserpw.length === 0) {
+                    warninfo.text('密码不能为空');
+                    $('#warn').removeClass('tohide');
+                    setTimeout("$('#warn').addClass('tohide')", 1000);
+                } else if (olduserpw.length > 16) {
+                    warninfo.text('密码为不能超过16个字符');
+                    $('#warn').removeClass('tohide');
+                    setTimeout("$('#warn').addClass('tohide')", 1000);
+                } else {
+                    if (userpw.length === 0) {
+                        warninfo.text('密码不能为空');
+                        $('#warn').removeClass('tohide');
+                        setTimeout("$('#warn').addClass('tohide')", 1000);
+                    } else if (userpw.length > 16) {
+                        warninfo.text('密码为不能超过16个字符');
+                        $('#warn').removeClass('tohide');
+                        setTimeout("$('#warn').addClass('tohide')", 1000);
+                    } else {
+                        $.ajax({
+                            url: "/toChange",
+                            type: "get",
+                            dataType: 'json',
+                            data: {
+                                userid: userid,
+                                olduserpw: olduserpw,
+                                userpw: userpw
+                            },
+                            success: function (msg) {
+                                if (msg === 1) {
+                                    location.href = "/index"
+                                } else {
+                                    warninfo.text(msg);
+                                    $('#warn').removeClass('tohide');
+                                    setTimeout("$('#warn').addClass('tohide')", 1000);
+                                }
+                            }
+                        })
+                    }
+                }
+            } else {
+                warninfo.text('请输入正确的学号');
+                $('#warn').removeClass('tohide');
+                setTimeout("$('#warn').addClass('tohide')", 1000);
+            }
+        })
+    })
+</script>
+
+</html>
