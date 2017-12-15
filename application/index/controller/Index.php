@@ -136,7 +136,7 @@ class Index extends \think\Controller
             // 移动到框架应用根目录/public/目录下
                 $filepath ='public' . DS . $class . DS .$user['userid'];
                 $filepath = iconv("utf-8","gb2312//IGNORE",$filepath);
-                $info = $file->validate(['size'=>536870912,'ext'=>'jpeg,jpg,png,mp4'])->move(ROOT_PATH . $filepath ,'');
+                $info = $file->validate(['size'=>536870912,'ext'=>'jpeg,jpg,png,mp4,doc,docx'])->move(ROOT_PATH . $filepath ,'');
                 if($info){
                     $filepath = 'public' . DS . $class . DS . $user['userid'];
                     $data = [
